@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css" />
+    <title>Document</title>
+</head>
+<body>
+        <div id="initial">
+            <form id="login">
+                <input id="id" maxlength=15 placeholder="ID"></input>
+                <input id="pw" maxlength=15 placeholder="PW"></input>
+                <button >LOG IN</button>
+            </form>
+            <button id="create-account" >JOIN HYDRA</button>
+        </div>
+        <div id="access-granted" class="hidden">
+            <h1 id="welcome" ><h1/>
+            <h2 class="js-clock"></h2>
+            <h3>YOUR CURRENT LOCATION</h3>
+            <div id="weather">
+                <a></a>
+                <span></span>
+            </div>
+            <h1>AVENGER ELIMINATION LIST</h1>
+        <form id="tokill-form" >
+            <input placeholder="TARGET NAME?"></input>
+            <button>ADD</button>
+        </form>
+    <ul id="tokill-list"></ul>
+    
+
+        </div>
+        <div id="locate-avenger" class="hidden">
+            <a></a>
+            <span></span>
+        </div>
+    <script src="src/main.js"></script>
+    <script src="src/tokill.js"></script>
+    <script src="src/background.js"></script>
+    <script src="src/weather.js"></script>
+    <script src="src/clock.js"></script>
+</body>
+</html>
