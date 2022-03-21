@@ -2,51 +2,48 @@ const toKillForm = document.getElementById("tokill-form");
 const toKillList = document.getElementById("tokill-list");
 const toKillInput = toKillForm.querySelector("input");
 
-const AVENGERS_KEY = "avengers";
-let avengers = [];
+const RICK_KEY = "Ricks";
+let ricks = [];
 
-function saveList() {
-  localStorage.setItem(AVENGERS_KEY, JSON.stringify(avengers));
+function init() {
+  const savedRicks = localStorage.getItem(RICK_KEY);
+
+  if (savedRicks !== null) {
+    const parsedRick = JSON.parse(savedRicks);
+    parsedRick.forEach(addToKill);
+  }
 }
 
-// function checkDuplication(avenger) {
-//   console.log(
-//     avengers.filter((item) => item.name.toLowerCase().includes(avenger))[0].name
-//   );
-//   if (
-//     undefined ===
-//     avengers.filter((item) => item.name.toLowerCase().includes(avenger)).name
-//   ) {
-//     return true;
-//   } else {
-//     false;
-//   }
-// }
+init();
+
+function saveList() {
+  localStorage.setItem(RICK_KEY, JSON.stringify(ricks));
+}
 
 function onSubmit(event) {
   event.preventDefault();
-  const avenger = toKillInput.value;
+  const rick = toKillInput.value;
 
   toKillInput.value = "";
-  const avengerObj = {
-    name: avenger,
+  const rickData = {
+    name: `Rick C-${rick}`,
     id: Date.now(),
   };
-  avengers.push(avengerObj);
-  addToKill(avengerObj);
+  avengers.push(rickData);
+  addToKill(rickData);
   saveList();
 }
 
-function addToKill(avenger) {
+function addToKill(rickData) {
   const li = document.createElement("li");
-  li.id = avenger.id;
+  li.id = rickData.id;
   const span = document.createElement("span");
   const button = document.createElement("button");
   button.innerText = "X";
   li.appendChild(span);
   li.appendChild(button);
 
-  span.innerText = avenger.name;
+  span.innerText = rickData.name;
   toKillList.appendChild(li);
   button.addEventListener("click", deleteToKill);
   //   locate.addEventListener("click", avengerLocation);
@@ -55,15 +52,8 @@ function addToKill(avenger) {
 function deleteToKill(event) {
   const li = event.target.parentElement;
   li.remove();
-  avengers = avengers.filter((avenger) => avenger.id !== parseInt(li.id));
+  ricks = ricks.filter((rick) => rick.id !== parseInt(li.id));
   saveList();
-}
-
-const savedAvengers = localStorage.getItem(AVENGERS_KEY);
-
-if (savedAvengers !== null) {
-  const parsedAvengers = JSON.parse(savedAvengers);
-  parsedAvengers.forEach(addToKill);
 }
 
 toKillForm.addEventListener("submit", onSubmit);

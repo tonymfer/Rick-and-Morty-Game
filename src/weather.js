@@ -1,7 +1,7 @@
 const weather = document.querySelector("#weather span");
 const realMap = document.querySelector("#weather a");
-const avengerLoc = document.querySelector("#locate-avenger a");
-const avengerWed = document.querySelector("#locate-avenger span");
+const rickLoc = document.querySelector("#locate-rick a");
+const rickWed = document.querySelector("#locate-rick span");
 // document.querySelector("#find-me").addEventListener("click", geoFindMe);
 const API_KEY = "08644542a25b99b81b333944503b43ab";
 
@@ -28,7 +28,7 @@ function plusMinus(item) {
   }
 }
 
-function avengerLocation(event) {
+function rickLocation(event) {
   console.log(event);
   const lat = plusMinus(90);
   const lon = plusMinus(180);
@@ -37,9 +37,9 @@ function avengerLocation(event) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      avengerLoc.href = `https://www.openstreetmap.org/#map=18/${lat}/${lon}`;
-      avengerLoc.innerText = `Latitude: ${lat} °, Longitude: ${lon} °`;
-      avengerWed.innerText = `WEATHER: ${data.weather[0].main}/ ${data.main.temp} °C`;
+      rickLoc.href = `https://www.openstreetmap.org/#map=18/${lat}/${lon}`;
+      rickLoc.innerText = `Latitude: ${lat} °, Longitude: ${lon} °`;
+      rickWed.innerText = `WEATHER: ${data.weather[0].main}/ ${data.main.temp} °C`;
     });
 }
 
@@ -47,4 +47,4 @@ function onGeoError() {
   alert("Can't find you. No weather for you.");
 }
 
-navigator.geolocation.getCurrentPosition(myLocation, onGeoError);
+// navigator.geolocation.getCurrentPosition(myLocation, onGeoError);

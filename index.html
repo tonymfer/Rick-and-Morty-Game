@@ -8,35 +8,41 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="greenPortal">
         <div id="initial">
             <form id="login">
-                <input id="id" maxlength=15 placeholder="ID"></input>
-                <input id="pw" maxlength=15 placeholder="PW"></input>
-                <button >LOG IN</button>
+                <input id="pw" maxlength=15 placeholder="ENTER CODE" class="hidden"></input>
+                <button class="hidden">ENTER</button>
             </form>
-            <button id="create-account" >JOIN HYDRA</button>
+            <button id="create-account" class="hidden">CREATE ACCOUNT</button>
+            <h2 id="scanning" class="hidden">SCANNING...</h2>
+            <div id="scanned" class="hidden">
+            </div>
         </div>
         <div id="access-granted" class="hidden">
-            <h1 id="welcome" ><h1/>
-            <h2 class="js-clock"></h2>
-            <h3>YOUR CURRENT LOCATION</h3>
-            <div id="weather">
-                <a></a>
-                <span></span>
+            <div id ="profile">
+                <h1 id="welcome" ><h1/>
+                <h3>YOUR CURRENT LOCATION</h3>
+                <div id="weather">
+                    <a></a>
+                    <span></span>
+                </div>
+            <!-- <h2 class="js-clock"></h2> -->
             </div>
-            <h1>AVENGER ELIMINATION LIST</h1>
-        <form id="tokill-form" >
-            <input placeholder="TARGET NAME?"></input>
-            <button>ADD</button>
-        </form>
-    <ul id="tokill-list"></ul>
-    
-
+            <div id="kill-rick">
+                <h1>RICK ELIMINATION LIST</h1>
+                <form id="tokill-form" >
+                    <input placeholder="TARGET NAME?"></input>
+                    <button>ADD</button>
+                </form>
+                <ul id="tokill-list"></ul>
+                <div id="locate-rick" class="hidden">
+                    <a></a>
+                    <span></span>
+                </div>
+            </div>
         </div>
-        <div id="locate-avenger" class="hidden">
-            <a></a>
-            <span></span>
-        </div>
+    </div>
     <script src="src/main.js"></script>
     <script src="src/tokill.js"></script>
     <script src="src/background.js"></script>

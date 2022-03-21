@@ -26,10 +26,7 @@ const randomColor = () => {
 };
 
 const giveMeColor = () => {
-  const colorOne = randomColor();
-  const colorTwo = randomColor();
-  const degree = Math.random() * 90;
-  bodyEl.style.background = `linear-gradient(${degree}deg, ${colorOne}, ${colorTwo})`;
+  bodyEl.style.background = "black";
 };
 
 // buttonEl.addEventListener("click", giveMeColor);
