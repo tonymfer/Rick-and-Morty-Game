@@ -35,14 +35,12 @@ function plusMinus(item) {
 }
 
 function rickLocation(event) {
-  console.log(event);
   const lat = plusMinus(90);
   const lon = plusMinus(180);
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       rickLoc.href = `https://www.openstreetmap.org/#map=18/${lat}/${lon}`;
       rickLoc.innerText = `Latitude: ${lat} °, Longitude: ${lon} °`;
       rickWed.innerText = `WEATHER: ${data.weather[0].main}/ ${data.main.temp} °C`;

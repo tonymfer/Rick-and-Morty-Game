@@ -50,6 +50,7 @@ function checkAccount(event) {
     container.classList.remove("greenPortal");
     initialEl.classList.add(CLASSNAME_HIDDEN);
     grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    playGame();
     createProfile(account);
     // console.log(account);
     navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
@@ -70,9 +71,18 @@ function createAccount(id) {
   button.addEventListener("click", () => {
     account.password = input.value;
     localStorage.setItem("account", JSON.stringify(account));
-    scannedEl.classList.add(CLASSNAME_HIDDEN);
-    initialEl.classList.remove(CLASSNAME_HIDDEN);
+    container.classList.remove("greenPortal");
+    initialEl.classList.add(CLASSNAME_HIDDEN);
+    grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    playGame();
+    createProfile(account);
   });
+  const ricksUrl = `https://rickandmortyapi.com/api/character/?name=rick&status=alive`;
+  fetch(ricksUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      localStorage.setItem("alive Ricks", JSON.stringify(data.results));
+    });
 
   fetch(url)
     .then((response) => response.json())
@@ -85,6 +95,9 @@ function createAccount(id) {
       } else {
         scanningEl.classList.add(CLASSNAME_HIDDEN);
         account = data;
+        account.power = episodeToNumber(data);
+        account.rank = calculatePower(episodeToNumber(data));
+        console.log(account);
         img.src = data.image;
         h3.innerText = `WELCOME ${data.name}`;
         scannedEl.appendChild(img);
@@ -96,10 +109,10 @@ function createAccount(id) {
     });
 }
 
-function calculatePower(data) {
-  const item = parseInt(data.episode[0].slice(-2).replaceAll("/", ""));
-  // console.log(item);
-
+function episodeToNumber(item) {
+  return parseInt(item.episode[0].slice(-2).replaceAll("/", ""));
+}
+function calculatePower(item) {
   if (item <= 5) {
     return "Rickillable";
   } else if (item <= 10) {
@@ -116,12 +129,13 @@ function calculatePower(data) {
 }
 
 function createProfile(data) {
+  const epiNum = episodeToNumber(data);
   const img = document.createElement("img");
   img.src = data.image;
   const h3 = document.createElement("h3");
   h3.innerText = `${data.name}`;
   const rank = document.createElement("h2");
-  rank.innerText = `POWER LEVEL: ${calculatePower(data)}`;
+  rank.innerText = `POWER LEVEL: ${calculatePower(epiNum)}`;
   const gender = document.createElement("p");
   gender.innerText = `GENDER: ${data.gender}`;
   const species = document.createElement("p");

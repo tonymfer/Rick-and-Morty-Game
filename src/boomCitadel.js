@@ -15,7 +15,7 @@ function tillCitadelBoom() {
   const minute = shapeTime(60, currentMin);
   const second = shapeTime(60, currentSec);
 
-  clockTitle.innerText = `BYE BYE CITADEL IN ${day} DAYS ${hour}:${minute}:${second}`;
+  clockTitle.innerText = `CITADEL EXPLODES IN ${hour}:${minute}:${second}`;
 }
 
 function shapeTime(maxNum, value) {

@@ -38,7 +38,7 @@ button {
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 6fr 3fr;
   grid-template-rows: repeat(2, minmax(50px, auto));
   gap: 5px 5px;
   place-items: start center;
@@ -52,4 +52,34 @@ button {
 .gridItem:nth-child(1) {
   grid-column: 1/4;
   grid-row: 1/1;
+}
+
+.rankRickillable {
+  border-width: 10px;
+  border-color: rgb(80, 255, 255);
+}
+
+.rankA {
+  border-width: 10px;
+  border-color: yellow;
+}
+
+.rankB {
+  border-width: 10px;
+  border-color: paleturquoise;
+}
+
+.rankC {
+  border-width: 10px;
+  border-color: darkolivegreen;
+}
+
+.rankTrash {
+  border-width: 10px;
+  border-color: darkgrey;
+}
+
+.rankJerry {
+  border-width: 10px;
+  border-color: rgba(117, 58, 0, 0.471);
 }
