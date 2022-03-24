@@ -1,23 +1,32 @@
 const toKillForm = document.getElementById("tokill-form");
 const toKillList = document.getElementById("tokill-list");
 const toKillInput = toKillForm.querySelector("input");
+const rickEl = document.querySelector("#kill-this-rick");
+const rickNameEl = rickEl.querySelector("h2");
+const challengersEl = rickEl.querySelector("li");
 
-const RICK_KEY = "Ricks";
-let ricks = [];
+const DEAD_RICK_KEY = "dead Ricks";
+const ALIVE_RICK_KEY = "alive Ricks";
+let aliveRicks = [];
+let deadRicks = [];
+let rickKillers = [];
 
 function init() {
-  const savedRicks = localStorage.getItem(RICK_KEY);
+  const firstTime = !!localStorage.getItem("account");
 
-  if (savedRicks !== null) {
+  if (firstTime) {
+    newAccount();
+  } else {
     const parsedRick = JSON.parse(savedRicks);
     parsedRick.forEach(addToKill);
+    deadRicks = localStorage?.getItem(DEAD_RICK_KEY);
+    aliveRicks = localStorage?.getItem(ALIVE_RICK_KEY);
   }
 }
 
-init();
-
 function saveList() {
-  localStorage.setItem(RICK_KEY, JSON.stringify(ricks));
+  localStorage.setItem(DEAD_RICK_KEY, JSON.stringify(deadRicks));
+  localStorage.setItem(ALIVE_RICK_KEY, JSON.stringify(aliveRicks));
 }
 
 function onSubmit(event) {
@@ -34,26 +43,53 @@ function onSubmit(event) {
   saveList();
 }
 
-function addToKill(rickData) {
-  const li = document.createElement("li");
-  li.id = rickData.id;
-  const span = document.createElement("span");
-  const button = document.createElement("button");
-  button.innerText = "X";
-  li.appendChild(span);
-  li.appendChild(button);
+function getRicks(event) {
+  event.preventDefault();
 
-  span.innerText = rickData.name;
-  toKillList.appendChild(li);
-  button.addEventListener("click", deleteToKill);
+  // const li = document.createElement("li");
+  // li.id = rickData.id;
+  // const span = document.createElement("span");
+  // button.innerText = "X";
+  // li.appendChild(span);
+
+  // span.innerText = rickData.name;
+  // toKillList.appendChild(li);
+  // button.addEventListener("click", deleteToKill);
   //   locate.addEventListener("click", avengerLocation);
 }
+function newAccount() {
+  const oneRick = aliveRicks[Math.floor(Math.random() * aliveRicks.length)];
 
-function deleteToKill(event) {
+  const ricksUrl = `https://rickandmortyapi.com/api/character/?name=rick&status=alive`;
+  fetch(ricksUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      aliveRicks = data.results;
+    });
+
+  const rickKillersUrl = `https://rickandmortyapi.com/api/character/?status=alive`;
+  fetch(rickKillersUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      rickKillers = data.results;
+      console.log(rickKillers);
+    });
+  //  if (data.name.toLowerCase().includes("rick")) {
+  //   newRick();
+  // } else {
+  //   picture.src = data.image;
+  //   soldierName.innerText = `Rest In Peace "${data.name}"`;
+  //   power.innerText = `POWER LEVEL: ${calculatePower(data)}`;
+  //   dead.innerText = `STATUS: ${data.status}`;
+  // }
+}
+
+function rickKilled(event) {
   const li = event.target.parentElement;
-  li.remove();
+
+  setTimeout(li.remove(), 2000);
   ricks = ricks.filter((rick) => rick.id !== parseInt(li.id));
   saveList();
 }
 
-toKillForm.addEventListener("submit", onSubmit);
+toKillForm.addEventListener("submit", newAccount);

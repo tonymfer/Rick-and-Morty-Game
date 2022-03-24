@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="greenPortal">
+    <div id="container" class="container greenPortal">
         <div id="initial">
             <form id="login">
                 <input id="pw" maxlength=15 placeholder="ENTER CODE" class="hidden"></input>
@@ -20,18 +20,27 @@
             </div>
         </div>
         <div id="access-granted" class="hidden">
-            <div id ="profile">
-                <h1 id="welcome" ><h1/>
+          <div class="gridContainer">
+            <div id="tillBoom" class="gridItem"></div>
+            <div id ="profile" class="gridItem">
+                <div id="profileEl"></div>
                 <h3>YOUR CURRENT LOCATION</h3>
-                <div id="weather">
-                    <a></a>
-                    <span></span>
+                <div id="description">
+                  <li>
+                    <ul id="planet"></ul>
+                    <ul id="longLat" ></ul>
+                    <ul id="country" >ANALYZING...</ul>
+                    <ul id="weather" ></ul>
+
+                  </li>
                 </div>
-            <!-- <h2 class="js-clock"></h2> -->
             </div>
-            <div id="kill-rick">
-                <h1>RICK ELIMINATION LIST</h1>
-                <form id="tokill-form" >
+            <div id="kill-rick" class="gridItem">
+                <div>
+                    <div></div>
+                <div>
+                    <h1>RICKS VS MORTYROCKS</h1>
+                    <form id="tokill-form" >
                     <input placeholder="TARGET NAME?"></input>
                     <button>ADD</button>
                 </form>
@@ -40,13 +49,26 @@
                     <a></a>
                     <span></span>
                 </div>
+                </div>
+                </div>
             </div>
+            <div class="gridItem">
+                <h3>Killed by Ricks</h3>
+                <div id="rip">
+                    <img/>
+                    <h2></h2>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </div>
+          </div>
         </div>
     </div>
     <script src="src/main.js"></script>
     <script src="src/tokill.js"></script>
     <script src="src/background.js"></script>
     <script src="src/weather.js"></script>
-    <script src="src/clock.js"></script>
+    <script src="src/boomCitadel.js"></script>
+    <script src="src/rip.js"></script>
 </body>
 </html>

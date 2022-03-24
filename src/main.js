@@ -2,12 +2,13 @@ const formEl = document.querySelector("#login");
 const killEl = document.querySelector("#tokill-form");
 const scanningEl = document.querySelector("#scanning");
 const pwEl = document.querySelector("#pw");
-const welcomeEl = document.querySelector("#welcome");
+const profileEl = document.querySelector("#profileEl");
 const createEl = document.querySelector("#create-account");
 const initialEl = document.querySelector("#initial");
 const grantedEl = document.querySelector("#access-granted");
 const scannedEl = document.querySelector("#scanned");
 const body = document.querySelector("body");
+const container = document.querySelector("#container");
 
 const CLASSNAME_HIDDEN = "hidden";
 let account = {};
@@ -16,18 +17,20 @@ function randomCharacter(event) {
   createEl.classList.add(CLASSNAME_HIDDEN);
   scanningEl.classList.remove(CLASSNAME_HIDDEN);
 
-  const numberOfCharacters = 493;
+  const numberOfCharacters = 826;
+  const numberOfPages = 42;
   const randomNumber = Math.floor(Math.random() * numberOfCharacters);
+  const randomPage = Math.floor(Math.random() * numberOfPages);
   createAccount(randomNumber);
 }
 
 function init() {
-  const url = `https://rickandmortyapi.coms/api/character`;
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    });
+  // const url = `https://rickandmortyapi.com/api/episode/51`;
+  // fetch(url)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
   const isSaved = !!localStorage.getItem("account");
   if (!isSaved) {
     createEl.classList.remove(CLASSNAME_HIDDEN);
@@ -35,18 +38,23 @@ function init() {
   if (isSaved) {
     pwEl.classList.remove(CLASSNAME_HIDDEN);
     account = JSON.parse(localStorage.getItem("account"));
+    // checkAccount();
   }
 }
 
 function checkAccount(event) {
   event.preventDefault();
   const input = pwEl.value;
-
+  // if (true) {
   if (input === account.password) {
+    container.classList.remove("greenPortal");
     initialEl.classList.add(CLASSNAME_HIDDEN);
     grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    createProfile(account);
+    // console.log(account);
+    navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
   } else {
-    alert("NICE TRY RICK, I AM ALWAYS ABOVE YOU");
+    alert("NICE TRY RICK, I AM WATCHING YOU");
   }
 }
 
@@ -63,14 +71,13 @@ function createAccount(id) {
     account.password = input.value;
     localStorage.setItem("account", JSON.stringify(account));
     scannedEl.classList.add(CLASSNAME_HIDDEN);
-    grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    initialEl.classList.remove(CLASSNAME_HIDDEN);
   });
 
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      console.log(account);
-
+      // console.log(data);
       if (data.status !== "Alive" && data.status !== "unknown") {
         randomCharacter();
       } else if (data.name.toLowerCase().includes("rick")) {
@@ -85,23 +92,46 @@ function createAccount(id) {
         scannedEl.appendChild(input);
         scannedEl.appendChild(button);
         scannedEl.classList.remove(CLASSNAME_HIDDEN);
-        console.log(account);
       }
     });
-  // if (name) {
-  //   formEl.classList.add(CLASSNAME_HIDDEN);
-  //   localStorage.setItem(`${name}`, JSON.stringify(account));
-  //   paintWelcome(name);
-  //   initialEl.classList.add(CLASSNAME_HIDDEN);
-  //   grantedEl.classList.remove(CLASSNAME_HIDDEN);
-  // } else {
-  //   alert("enter ID");
-  // }
 }
 
-function paintWelcome(username) {
-  welcomeEl.innerText = `WELCOME ${username.toUpperCase()}`;
-  welcomeEl.classList.remove(CLASSNAME_HIDDEN);
+function calculatePower(data) {
+  const item = parseInt(data.episode[0].slice(-2).replaceAll("/", ""));
+  // console.log(item);
+
+  if (item <= 5) {
+    return "Rickillable";
+  } else if (item <= 10) {
+    return "A";
+  } else if (item <= 20) {
+    return "B";
+  } else if (item <= 30) {
+    return "C";
+  } else if (item <= 40) {
+    return "GARBAGE";
+  } else {
+    return "Jerry";
+  }
+}
+
+function createProfile(data) {
+  const img = document.createElement("img");
+  img.src = data.image;
+  const h3 = document.createElement("h3");
+  h3.innerText = `${data.name}`;
+  const rank = document.createElement("h2");
+  rank.innerText = `POWER LEVEL: ${calculatePower(data)}`;
+  const gender = document.createElement("p");
+  gender.innerText = `GENDER: ${data.gender}`;
+  const species = document.createElement("p");
+  species.innerText = `SPECIES: ${data.species}`;
+  const status = document.createElement("p");
+  status.innerText = `STATUS: ${data.status}`;
+  const homeAddress = document.createElement("p");
+  homeAddress.innerText = `HOME: ${data.location.name}`;
+  profileEl.append(img, h3, rank, gender, species, status, homeAddress);
+  profileEl.classList.remove(CLASSNAME_HIDDEN);
 }
 
 createEl.addEventListener("click", randomCharacter);

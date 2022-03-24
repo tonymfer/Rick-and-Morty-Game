@@ -1,5 +1,7 @@
-const weather = document.querySelector("#weather span");
-const realMap = document.querySelector("#weather a");
+const longLat = document.querySelector("#longLat");
+const planet = document.querySelector("#planet");
+const country = document.querySelector("#country");
+const weather = document.querySelector("#weather");
 const rickLoc = document.querySelector("#locate-rick a");
 const rickWed = document.querySelector("#locate-rick span");
 // document.querySelector("#find-me").addEventListener("click", geoFindMe);
@@ -13,10 +15,14 @@ function myLocation(position, event) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      realMap.href = `https://www.openstreetmap.org/#map=18/${lat}/${lon}`;
-      realMap.innerText = ` Latitude: ${lat} °, Longitude: ${lon} °`;
-      weather.innerText = `CITY: ${data.name} WEATHER: ${data.weather[0].main}/ ${data.main.temp} °C`;
+      const button = document.createElement("button");
+      button.href = `https://www.openstreetmap.org/#map=18/${lat}/${lon}`;
+      longLat.appendChild(button);
+      // console.log(data);
+      planet.innerText = "PLANET: EARTH";
+      longLat.innerText = `LAT: ${lat}°, LON: ${lon}°`;
+      weather.innerText = `WEATHER: ${data.weather[0].description}/ ${data.main.temp} °C`;
+      country.innerText = `COUNTRY: ${data.sys.country}`;
     });
 }
 function plusMinus(item) {
@@ -46,5 +52,3 @@ function rickLocation(event) {
 function onGeoError() {
   alert("Can't find you. No weather for you.");
 }
-
-// navigator.geolocation.getCurrentPosition(myLocation, onGeoError);

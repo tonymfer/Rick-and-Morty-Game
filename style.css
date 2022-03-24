@@ -13,8 +13,20 @@ body {
   color: white;
 }
 
+li {
+  list-style-type: none;
+}
+
 button {
   font-size: 20px;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .greenPortal {
@@ -22,9 +34,22 @@ button {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30vw;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, minmax(50px, auto));
+  gap: 5px 5px;
+  place-items: start center;
+}
+.gridItem {
+  border-color: white;
+  border-width: 10px;
   align-items: center;
+}
+
+.gridItem:nth-child(1) {
+  grid-column: 1/4;
+  grid-row: 1/1;
 }
