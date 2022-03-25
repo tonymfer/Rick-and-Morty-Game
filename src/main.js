@@ -9,11 +9,18 @@ const grantedEl = document.querySelector("#access-granted");
 const scannedEl = document.querySelector("#scanned");
 const body = document.querySelector("body");
 const container = document.querySelector("#container");
+const title = initialEl.querySelector("h1");
 
 const CLASSNAME_HIDDEN = "hidden";
+const haveAcc = !!localStorage.getItem("life");
+const ispassword = !!localStorage.getItem("password");
+let password;
 let account = {};
 
 function randomCharacter(event) {
+  title.innerText = `REMAINING CHANCE : ${
+    !!localStorage.getItem("life") ? localStorage.getItem("life") : 5
+  }`;
   createEl.classList.add(CLASSNAME_HIDDEN);
   scanningEl.classList.remove(CLASSNAME_HIDDEN);
 
@@ -25,20 +32,25 @@ function randomCharacter(event) {
 }
 
 function init() {
-  // const url = `https://rickandmortyapi.com/api/episode/51`;
-  // fetch(url)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //   });
-  const isSaved = !!localStorage.getItem("account");
-  if (!isSaved) {
+  const haveDude = !!localStorage.getItem("account");
+  const life = parseInt(localStorage?.getItem("life"));
+  if (!haveAcc) {
     createEl.classList.remove(CLASSNAME_HIDDEN);
   }
-  if (isSaved) {
-    pwEl.classList.remove(CLASSNAME_HIDDEN);
-    account = JSON.parse(localStorage.getItem("account"));
-    // checkAccount();
+  if (haveAcc) {
+    if (life === 0) {
+      title.innerHTML = "GAMEOVER";
+      localStorage.clear();
+    } else if (!haveDude) {
+      title.innerHTML = "CONTINUE?";
+      createEl.innerText = "GET A NEW DUDE";
+      createEl.classList.remove(CLASSNAME_HIDDEN);
+    } else {
+      title.innerHTML = "CONTINUE?";
+      formEl.classList.remove(CLASSNAME_HIDDEN);
+      password = localStorage.getItem("password");
+      account = JSON.parse(localStorage.getItem("account"));
+    }
   }
 }
 
@@ -46,7 +58,7 @@ function checkAccount(event) {
   event.preventDefault();
   const input = pwEl.value;
   // if (true) {
-  if (input === account.password) {
+  if (input === password) {
     container.classList.remove("greenPortal");
     initialEl.classList.add(CLASSNAME_HIDDEN);
     grantedEl.classList.remove(CLASSNAME_HIDDEN);
@@ -61,21 +73,28 @@ function checkAccount(event) {
 
 function createAccount(id) {
   const url = `https://rickandmortyapi.com/api/character/${id}`;
-
   const input = document.createElement("input");
   input.placeholder = "enter your screte code";
   const img = document.createElement("img");
   const h3 = document.createElement("h3");
   const button = document.createElement("button");
-  button.innerText = "SUBMIT";
+  button.innerText = "GO";
   button.addEventListener("click", () => {
-    account.password = input.value;
     localStorage.setItem("account", JSON.stringify(account));
+    if (!haveAcc) {
+      localStorage.setItem("life", 5);
+    }
+    localStorage.setItem("remainingRick", 5);
+    if (!password) {
+      localStorage.setItem("password", input.value);
+    }
     container.classList.remove("greenPortal");
+    initialEl.classList.remove("mainAlign");
     initialEl.classList.add(CLASSNAME_HIDDEN);
     grantedEl.classList.remove(CLASSNAME_HIDDEN);
     playGame();
     createProfile(account);
+    navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
   });
   const ricksUrl = `https://rickandmortyapi.com/api/character/?name=rick&status=alive`;
   fetch(ricksUrl)
@@ -95,24 +114,27 @@ function createAccount(id) {
       } else {
         scanningEl.classList.add(CLASSNAME_HIDDEN);
         account = data;
-        account.power = episodeToNumber(data);
-        account.rank = calculatePower(episodeToNumber(data));
+        account.power = calculatePower(data);
+        account.rank = calculateRank(calculatePower(data));
         console.log(account);
         img.src = data.image;
         h3.innerText = `WELCOME ${data.name}`;
         scannedEl.appendChild(img);
         scannedEl.appendChild(h3);
-        scannedEl.appendChild(input);
+        if (!ispassword) {
+          scannedEl.appendChild(input);
+        }
         scannedEl.appendChild(button);
         scannedEl.classList.remove(CLASSNAME_HIDDEN);
       }
     });
 }
 
-function episodeToNumber(item) {
+function calculatePower(item) {
   return parseInt(item.episode[0].slice(-2).replaceAll("/", ""));
 }
-function calculatePower(item) {
+
+function calculateRank(item) {
   if (item <= 5) {
     return "Rickillable";
   } else if (item <= 10) {
@@ -129,13 +151,13 @@ function calculatePower(item) {
 }
 
 function createProfile(data) {
-  const epiNum = episodeToNumber(data);
+  const power = calculatePower(data);
   const img = document.createElement("img");
   img.src = data.image;
   const h3 = document.createElement("h3");
   h3.innerText = `${data.name}`;
   const rank = document.createElement("h2");
-  rank.innerText = `POWER LEVEL: ${calculatePower(epiNum)}`;
+  rank.innerText = `POWER LEVEL: ${calculateRank(power)}`;
   const gender = document.createElement("p");
   gender.innerText = `GENDER: ${data.gender}`;
   const species = document.createElement("p");

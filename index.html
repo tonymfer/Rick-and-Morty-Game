@@ -9,12 +9,13 @@
 </head>
 <body>
     <div id="container" class="container greenPortal">
-        <div id="initial">
-            <form id="login">
-                <input id="pw" maxlength=15 placeholder="ENTER CODE" class="hidden"></input>
-                <button class="hidden">ENTER</button>
+        <div id="initial" class="mainAlign">
+            <h1>KILL 5 RICKS</h1>
+            <form id="login" class="hidden">
+                <input id="pw" maxlength=15 placeholder="ENTER CODE" ></input>
+                <button>ENTER</button>
             </form>
-            <button id="create-account" class="hidden">HIRE A DUDE</button>
+            <button id="create-account" class="hidden">PLAY</button>
             <h2 id="scanning" class="hidden">SEARCHING...</h2>
             <div id="scanned" class="hidden">
             </div>
@@ -22,7 +23,9 @@
         <div id="access-granted" class="hidden">
           <div class="gridContainer">
             <div id="tillBoom" class="gridItem"></div>
+            
             <div id ="profile" class="gridItem">
+                <h1>UR DUDE</h1>
                 <div id="profileEl"></div>
                 <h3>YOUR CURRENT LOCATION</h3>
                 <div id="description">
@@ -58,10 +61,11 @@
                 </div>
             </div>
             <div class="gridItem">
-                <h3>Killed by Ricks</h3>
-                <form id="tokill-form" >
-                <input placeholder="TARGET NAME?"></input>
-                <button>ADD</button>
+                <h3>R.I.P</h3>
+                <form id="dead-characters" >
+                </form>
+                <h3>G.T.H(GO TO HELL)</h3>
+                <form id="dead-ricks" >
                 </form>
                 
             </div>
@@ -69,10 +73,10 @@
         </div>
     </div>
     <script src="src/main.js"></script>
-    <script src="src/tokill.js"></script>
+    <script src="src/fight.js"></script>
     <script src="src/background.js"></script>
     <script src="src/weather.js"></script>
     <script src="src/boomCitadel.js"></script>
-    <script src="src/rip.js"></script>
+    <script src="src/status.js"></script>
 </body>
 </html>

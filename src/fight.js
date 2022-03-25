@@ -1,7 +1,4 @@
 // import { monsterPower } from "./rip.js";
-const toKillForm = document.getElementById("tokill-form");
-const toKillList = document.getElementById("tokill-list");
-const toKillInput = toKillForm.querySelector("input");
 const rickEl = document.querySelector("#kill-this-rick");
 const rickFaceEl = rickEl.getElementsByTagName("img");
 const rickNameEl = rickEl.getElementsByTagName("h2");
@@ -27,7 +24,7 @@ let deadAccounts = [];
 let currentRick = {};
 let monsterPower;
 let monsterRank;
-
+let life;
 function playGame() {
   console.log("continue game");
   if (!!localStorage.getItem(DEAD_ACCOUNTS_KEY)) {
@@ -35,9 +32,11 @@ function playGame() {
   }
   deadRicks = JSON.parse(localStorage?.getItem(DEAD_RICK_KEY));
   aliveRicks = JSON.parse(localStorage?.getItem(ALIVE_RICK_KEY));
+  life = localStorage.getItem("life");
 
   currentAccount = JSON.parse(localStorage.getItem("account"));
   pickRick();
+  statusInit();
   // setTimeout(pickRick(), 2000);
 }
 
@@ -51,12 +50,14 @@ function newGame() {
   // } else {
   //   picture.src = data.image;
   //   soldierName.innerText = `Rest In Peace "${data.name}"`;
-  //   power.innerText = `POWER LEVEL: ${calculatePower(data)}`;
+  //   power.innerText = `POWER LEVEL: ${calculateRank(data)}`;
   //   dead.innerText = `STATUS: ${data.status}`;
   // }
 }
 
 function saveEverything() {
+  localStorage.setItem("life", life);
+  localStorage.setItem("password", password);
   localStorage.setItem(DEAD_RICK_KEY, JSON.stringify(deadRicks));
   localStorage.setItem(ALIVE_RICK_KEY, JSON.stringify(aliveRicks));
   localStorage.setItem(DEAD_ACCOUNTS_KEY, JSON.stringify(deadAccounts));
@@ -92,6 +93,7 @@ function getRicks(event) {
 }
 
 function userKilled() {
+  life = life - 1;
   console.log(deadAccounts, currentAccount);
   deadAccounts.unshift(currentAccount);
   console.log(deadAccounts, currentAccount);
@@ -100,10 +102,25 @@ function userKilled() {
   location.reload();
 }
 
-function powerUp() {
+function updateUserPower() {
   document.querySelector(
     "#profileEl h2"
-  ).innerText = `POWER LEVEL: ${calculatePower(currentAccount.power)}`;
+  ).innerText = `POWER LEVEL: ${calculateRank(currentAccount.power)}`;
+}
+
+function exp(item) {
+  switch (item) {
+    case "rickillable":
+      return 1;
+    case "A":
+      return 0.5;
+    case "B":
+      return 0.2;
+    case "C":
+      return 0.1;
+    case "trash":
+      return 0.05;
+  }
 }
 
 function fightMonster() {
@@ -118,7 +135,7 @@ function fightMonster() {
     }
     console.log(currentAccount.power);
     createMonster();
-    powerUp();
+    updateUserPower();
   } else {
     userKilled();
     alert("you are dead!");
@@ -160,8 +177,8 @@ function createMonster() {
         createMonster();
       } else {
         // console.log(parseInt(data.episode[0].slice(-2).replaceAll("/", "")));
-        monsterPower = episodeToNumber(data);
-        monsterRank = calculatePower(monsterPower);
+        monsterPower = calculatePower(data);
+        monsterRank = calculateRank(monsterPower);
         console.log(monsterPower);
         picture.src = data.image;
         soldierName.innerText = `${data.name}(${data.status})`;
