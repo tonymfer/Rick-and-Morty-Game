@@ -17,7 +17,7 @@ const killRick = document.querySelector("#challenge");
 const DEAD_RICK_KEY = "dead Ricks";
 const ALIVE_RICK_KEY = "alive Ricks";
 const DEAD_ACCOUNTS_KEY = "dead account";
-let aliveRicks = [];
+let aliveboss = [];
 let deadRicks = [];
 let currentAccount = {};
 let deadAccounts = [];
@@ -165,10 +165,10 @@ function random() {
   return randomCharacter;
 }
 
-function createMonster() {
+async function createMonster() {
   const id = random();
   const url = `https://rickandmortyapi.com/api/character/${id}`;
-  fetch(url)
+  await fetch(url)
     .then((response) => response.json())
     .then((data) => {
       if (data.status == "Dead") {

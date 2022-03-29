@@ -19,6 +19,25 @@ li {
 
 button {
   font-size: 20px;
+  background-color: greenyellow;
+  align-items: center;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+}
+
+img {
+  transition: filter 1s linear;
+  border: 2px solid white;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100px;
+}
+
+.blur {
+  filter: blur(2px);
 }
 
 .container {
@@ -31,6 +50,8 @@ button {
 
 .mainAlign {
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .mainTitle {

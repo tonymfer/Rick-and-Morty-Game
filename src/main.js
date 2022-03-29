@@ -7,6 +7,12 @@ const createEl = document.querySelector("#create-account");
 const initialEl = document.querySelector("#initial");
 const grantedEl = document.querySelector("#access-granted");
 const scannedEl = document.querySelector("#scanned");
+const scanContainer = document.querySelector("#cards-container");
+const cardEl = scannedEl.querySelector("div");
+// const card2 = scannedEl.querySelector("#card2");
+// const card3 = scannedEl.querySelector("#card3");
+// const card4 = scannedEl.querySelector("#card4");
+// const card5 = scannedEl.querySelector("#card5");
 const body = document.querySelector("body");
 const container = document.querySelector("#container");
 const title = initialEl.querySelector("h1");
@@ -16,28 +22,126 @@ const haveAcc = !!localStorage.getItem("life");
 const ispassword = !!localStorage.getItem("password");
 let password;
 let account = {};
+let cards = [];
 
-function randomCharacter(event) {
-  title.innerText = `REMAINING CHANCE : ${
-    !!localStorage.getItem("life") ? localStorage.getItem("life") : 5
-  }`;
-  createEl.classList.add(CLASSNAME_HIDDEN);
-  scanningEl.classList.remove(CLASSNAME_HIDDEN);
+async function fetchRicks() {
+  const url = `https://rickandmortyapi.com/api/character/[74,119,118]`;
+  return await fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const boss = [];
+      boss.push(data[0]);
+      boss.push(data[2]);
+      boss.push(data[1]);
+      localStorage.setItem("boss", JSON.stringify(boss));
+    });
+}
 
+async function fetchCards() {
   const numberOfCharacters = 826;
-  const numberOfPages = 42;
-  const randomNumber = Math.floor(Math.random() * numberOfCharacters);
-  const randomPage = Math.floor(Math.random() * numberOfPages);
-  createAccount(randomNumber);
+  let num = Math.floor(Math.random() * numberOfCharacters);
+  title.innerText = "PICK YOUR DUDE";
+
+  const url = `https://rickandmortyapi.com/api/character/${num}`;
+  if (cards.length < 5) {
+    await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.name.toLowerCase().includes("rick")) {
+          const div = document.createElement("div");
+          div.id = cards.length;
+          cards.push(data);
+
+          const img = document.createElement("img");
+          const h3 = document.createElement("h3");
+
+          img.src = data.image;
+          img.classList.add("blur");
+          img.addEventListener("click", pickCard);
+
+          h3.innerText = `${data.name}`;
+          h3.classList.add(CLASSNAME_HIDDEN);
+
+          div.appendChild(img);
+          div.appendChild(h3);
+          scannedEl.appendChild(div);
+        }
+      })
+      .then(() => fetchCards());
+  }
+
+  if (cards.length == 5) {
+    scanningEl.classList.add(CLASSNAME_HIDDEN);
+    scannedEl.classList.remove(CLASSNAME_HIDDEN);
+  }
+}
+
+function pickCard(event) {
+  const card = event.path[1];
+  const cardId = parseInt(event.path[1].id);
+  account = cards[cardId];
+  account.power = calculatePower(cards[cardId]);
+  account.rank = calculateRank(calculatePower(cards[cardId]));
+  const rankEl = document.createElement("h2");
+  rankEl.innerText = account.rank;
+  rankEl.style.color = rankColor(account.power);
+  card.insertBefore(rankEl, card.querySelector("h3"));
+  title.innerText = `REMAINING CHANCE : ${
+    !!localStorage.getItem("life") ? localStorage.getItem("life") : 3
+  }`;
+
+  for (let i = 0; i < 5; i++) {
+    if (i === cardId) {
+      cards.splice(i, 1);
+    } else {
+      const item = document.getElementById(i.toString());
+      console.log("hide this", item);
+      item.classList.add(CLASSNAME_HIDDEN);
+    }
+  }
+  console.log(card);
+  const name = card.querySelector("h3");
+  const cardRank = card.querySelector("h2");
+  const image = card.querySelector("img");
+
+  name.classList.remove(CLASSNAME_HIDDEN);
+  cardRank.classList.remove(CLASSNAME_HIDDEN);
+  image.classList.remove("blur");
+  const button = document.createElement("button");
+  const input = document.createElement("input");
+  input.placeholder = "enter your screte code";
+  if (!ispassword) {
+    scanContainer.appendChild(input);
+  }
+  scanContainer.appendChild(button);
+  button.innerText = "GO";
+  button.addEventListener("click", () => {
+    localStorage.setItem("account", JSON.stringify(account));
+    console.log(account);
+    if (!haveAcc) {
+      localStorage.setItem("life", 5);
+    }
+    localStorage.setItem("remainingRick", 5);
+    if (!password) {
+      localStorage.setItem("password", input.value);
+    }
+    container.classList.remove("greenPortal");
+    initialEl.classList.remove("mainAlign");
+    initialEl.classList.add(CLASSNAME_HIDDEN);
+    grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    playGame();
+    createProfile(account);
+    navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
+  });
 }
 
 function init() {
   const haveDude = !!localStorage.getItem("account");
   const life = parseInt(localStorage?.getItem("life"));
-  if (!haveAcc) {
+  if (!haveDude) {
     createEl.classList.remove(CLASSNAME_HIDDEN);
   }
-  if (haveAcc) {
+  if (haveDude) {
     if (life === 0) {
       title.innerHTML = "GAMEOVER";
       localStorage.clear();
@@ -67,71 +171,56 @@ function checkAccount(event) {
     // console.log(account);
     navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
   } else {
-    alert("NICE TRY RICK, I AM WATCHING YOU");
+    alert("NICE TRY EVIL MORTY, I AM WATCHING YOU");
   }
 }
 
-function createAccount(id) {
-  const url = `https://rickandmortyapi.com/api/character/${id}`;
-  const input = document.createElement("input");
-  input.placeholder = "enter your screte code";
-  const img = document.createElement("img");
-  const h3 = document.createElement("h3");
-  const button = document.createElement("button");
-  button.innerText = "GO";
-  button.addEventListener("click", () => {
-    localStorage.setItem("account", JSON.stringify(account));
-    if (!haveAcc) {
-      localStorage.setItem("life", 5);
-    }
-    localStorage.setItem("remainingRick", 5);
-    if (!password) {
-      localStorage.setItem("password", input.value);
-    }
-    container.classList.remove("greenPortal");
-    initialEl.classList.remove("mainAlign");
-    initialEl.classList.add(CLASSNAME_HIDDEN);
-    grantedEl.classList.remove(CLASSNAME_HIDDEN);
-    playGame();
-    createProfile(account);
-    navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
-  });
-  const ricksUrl = `https://rickandmortyapi.com/api/character/?name=rick&status=alive`;
-  fetch(ricksUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      localStorage.setItem("alive Ricks", JSON.stringify(data.results));
-    });
+function createAccount() {
+  createEl.classList.add(CLASSNAME_HIDDEN);
+  scanningEl.classList.remove(CLASSNAME_HIDDEN);
+  fetchCards();
+  fetchRicks();
 
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      // console.log(data);
-      if (data.status !== "Alive" && data.status !== "unknown") {
-        randomCharacter();
-      } else if (data.name.toLowerCase().includes("rick")) {
-        randomCharacter();
-      } else {
-        scanningEl.classList.add(CLASSNAME_HIDDEN);
-        account = data;
-        account.power = calculatePower(data);
-        account.rank = calculateRank(calculatePower(data));
-        console.log(account);
-        img.src = data.image;
-        h3.innerText = `WELCOME ${data.name}`;
-        scannedEl.appendChild(img);
-        scannedEl.appendChild(h3);
-        if (!ispassword) {
-          scannedEl.appendChild(input);
-        }
-        scannedEl.appendChild(button);
-        scannedEl.classList.remove(CLASSNAME_HIDDEN);
-      }
-    });
+  // if (data.status !== "Alive" && data.status !== "unknown") {
+  //   randomCharacter();
+  // } else if (data.name.toLowerCase().includes("rick")) {
+  //   randomCharacter();
+  // } else {
+  //   scanningEl.classList.add(CLASSNAME_HIDDEN);
+  //   account = data;
+  //   account.power = calculatePower(data);
+  //   account.rank = calculateRank(calculatePower(data));
+  //   console.log(account);
+  //   img.src = data.image;
+  //   h3.innerText = `WELCOME ${data.name}`;
+  //   scannedEl.appendChild(img);
+  //   scannedEl.appendChild(h3);
+  //   if (!ispassword) {
+  //     scannedEl.appendChild(input);
+  //   }
+  //   scannedEl.appendChild(button);
+  //   scannedEl.classList.remove(CLASSNAME_HIDDEN);
+  // }
 }
 
 function calculatePower(item) {
   return parseInt(item.episode[0].slice(-2).replaceAll("/", ""));
+}
+
+function rankColor(item) {
+  if (item <= 5) {
+    return "red";
+  } else if (item <= 10) {
+    return "yellow";
+  } else if (item <= 20) {
+    return "blue";
+  } else if (item <= 30) {
+    return "";
+  } else if (item <= 40) {
+    return "brown";
+  } else {
+    return "green";
+  }
 }
 
 function calculateRank(item) {
@@ -144,7 +233,7 @@ function calculateRank(item) {
   } else if (item <= 30) {
     return "C";
   } else if (item <= 40) {
-    return "GARBAGE";
+    return "garbage";
   } else {
     return "Jerry";
   }
@@ -170,6 +259,6 @@ function createProfile(data) {
   profileEl.classList.remove(CLASSNAME_HIDDEN);
 }
 
-createEl.addEventListener("click", randomCharacter);
+createEl.addEventListener("click", createAccount);
 formEl.addEventListener("submit", checkAccount);
 init();

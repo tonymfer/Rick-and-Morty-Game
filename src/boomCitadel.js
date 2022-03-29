@@ -43,9 +43,9 @@ function shapeMin() {
   }
 }
 
-setInterval(shapeSec, 1000);
-setInterval(shapeMin, 60000);
-setInterval(tillCitadelBoom, 1000);
-shapeSec();
-shapeMin();
-tillCitadelBoom();
+// setInterval(shapeSec, 1000);
+// setInterval(shapeMin, 60000);
+// setInterval(tillCitadelBoom, 1000);
+// shapeSec();
+// shapeMin();
+// tillCitadelBoom();
