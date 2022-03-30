@@ -18,9 +18,15 @@ li {
 }
 
 button {
-  font-size: 20px;
+  font-size: 3vw;
   background-color: greenyellow;
   align-items: center;
+}
+
+.bigFont {
+  font-size: 9vw;
+  font-weight: bolder;
+  /* color: whi; */
 }
 
 .cards {
@@ -28,27 +34,47 @@ button {
   flex-direction: row;
 }
 
+input {
+  font-size: 2vw;
+}
+
 img {
   transition: filter 1s linear;
-  border: 2px solid white;
+  border: 2px solid greenyellow;
   border-radius: 4px;
   padding: 5px;
-  width: 100px;
+  margin: 10px;
+  width: 12vw;
 }
 
 .blur {
   filter: blur(2px);
 }
 
+.background-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
 .container {
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin: 20px;
 }
 
 .mainAlign {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -65,6 +91,25 @@ img {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30vw;
+  transition: background-size 1300ms linear;
+}
+
+.enterGreen {
+  background-size: 140vw;
+}
+
+.citadelBoom {
+  background-image: url("./img/citadelBoom.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+}
+
+.citadelSaved {
+  background-image: url(https://tenor.com/view/rick-and-morty-rick-morty-citadel-evil-morty-gif-23289499);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 200vw;
 }
 
 .gridContainer {
@@ -73,11 +118,12 @@ img {
   grid-template-rows: repeat(2, minmax(50px, auto));
   gap: 5px 5px;
   place-items: start center;
-}
-.gridItem {
   border-color: white;
   border-width: 10px;
+}
+.gridItem {
   align-items: center;
+  color: white;
 }
 
 .gridItem:nth-child(1) {
@@ -88,29 +134,86 @@ img {
 .rankRickillable {
   border-width: 10px;
   border-color: rgb(80, 255, 255);
+  color: rgb(80, 255, 255);
 }
 
 .rankA {
   border-width: 10px;
   border-color: yellow;
+  color: yellow;
 }
 
 .rankB {
   border-width: 10px;
   border-color: paleturquoise;
+  color: paleturquoise;
 }
 
 .rankC {
   border-width: 10px;
   border-color: darkolivegreen;
+  color: darkolivegreen;
 }
 
 .rankTrash {
   border-width: 10px;
-  border-color: darkgrey;
+  border-color: darkgray;
+  color: darkgrey;
 }
 
 .rankJerry {
   border-width: 10px;
-  border-color: rgba(117, 58, 0, 0.471);
+  border-color: black;
+  color: black;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: darkslategray;
+  margin: auto;
+  padding: 15px;
+  border: 1px solid red;
+  border-radius: 1vw;
+  width: 90%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+p {
+  color: black;
+}
+
+h5 {
+  color: red;
+}
+
+h2 {
+  color: yellowgreen;
 }

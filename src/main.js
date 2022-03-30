@@ -16,13 +16,115 @@ const cardEl = scannedEl.querySelector("div");
 const body = document.querySelector("body");
 const container = document.querySelector("#container");
 const title = initialEl.querySelector("h1");
+const newGameEl = document.querySelector("#new-game");
+const modal = document.querySelector("#myModal");
+const helpButton = document.querySelector("#help");
+const closeButton = document.getElementsByClassName("close")[0];
+title.classList.add("bigFont");
+
+const gameOverVideo = document.querySelector("#gameover");
+const gameWinVideo = document.querySelector("#gameWin");
+const gameBackgroundVideo = document.querySelector("#game-background");
+const bgMusic = new Audio("/img/timeisout.mp3");
+const gameoverMusic = new Audio("/img/lostalllife.mp3");
+bgMusic.play();
 
 const CLASSNAME_HIDDEN = "hidden";
-const haveAcc = !!localStorage.getItem("life");
-const ispassword = !!localStorage.getItem("password");
+let ispassword = !!localStorage.getItem("password");
 let password;
 let account = {};
 let cards = [];
+let cardId;
+
+helpButton.onclick = function () {
+  modal.style.display = "block";
+};
+closeButton.onclick = function () {
+  modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+function init() {
+  const saved = !!localStorage.getItem("life");
+  const dead = !localStorage.getItem("account");
+  const paused = !dead;
+
+  const win =
+    !localStorage.getItem("alive boss") && !!localStorage.getItem("dead boss");
+  if (!saved) {
+    localStorage.setItem("life", 3);
+    localStorage.setItem("remainingRick", 3);
+    createEl.classList.remove(CLASSNAME_HIDDEN);
+    newGameEl.classList.add(CLASSNAME_HIDDEN);
+  }
+  if (saved) {
+    // container.classList.add("greenPortal");
+    life = parseInt(localStorage.getItem("life"));
+    if (dead) {
+      if (win) {
+        title.innerHTML = "YOU SAVED CITADEL";
+        helpButton.classList.add(CLASSNAME_HIDDEN);
+        newGameEl.classList.add(CLASSNAME_HIDDEN);
+        setTimeout(() => {
+          title.classList.remove(CLASSNAME_HIDDEN);
+        }, 6000);
+        setTimeout(() => {
+          newGameEl.classList.remove(CLASSNAME_HIDDEN);
+        }, 9000);
+        initialEl.classList.remove(CLASSNAME_HIDDEN);
+        gameBackgroundVideo.classList.add(CLASSNAME_HIDDEN);
+        gameBackgroundVideo.pause();
+        gameWinVideo.play();
+        gameoverMusic.play();
+        localStorage.clear();
+        gameOverVideo.classList.remove(CLASSNAME_HIDDEN);
+      } else if (life === 0) {
+        helpButton.classList.add(CLASSNAME_HIDDEN);
+        newGameEl.classList.add(CLASSNAME_HIDDEN);
+        setTimeout(() => {
+          title.classList.remove(CLASSNAME_HIDDEN);
+        }, 6000);
+        setTimeout(() => {
+          newGameEl.classList.remove(CLASSNAME_HIDDEN);
+        }, 9000);
+        title.innerHTML = "GAMEOVER";
+        initialEl.classList.remove(CLASSNAME_HIDDEN);
+        gameBackgroundVideo.classList.add(CLASSNAME_HIDDEN);
+        gameBackgroundVideo.pause();
+        gameOverVideo.play();
+        gameoverMusic.play();
+        localStorage.clear();
+        gameOverVideo.classList.remove(CLASSNAME_HIDDEN);
+
+        // container.classList.remove("citadelSaved");
+        // container.classList.add("citadelBoom");
+      } else {
+        title.classList.remove(CLASSNAME_HIDDEN);
+        const children = [].slice.call(scannedEl.children);
+        children.forEach((element) =>
+          element.classList.remove(CLASSNAME_HIDDEN)
+        );
+
+        title.innerText = `LIFE : ${localStorage.getItem("life")}`;
+        initialEl.classList.remove(CLASSNAME_HIDDEN);
+        createEl.classList.add(CLASSNAME_HIDDEN);
+        console.log(cards);
+      }
+    }
+    if (paused) {
+      title.innerHTML = "CONTINUE?";
+      formEl.classList.remove(CLASSNAME_HIDDEN);
+      password = localStorage.getItem("password");
+      account = JSON.parse(localStorage.getItem("account"));
+    }
+  }
+}
 
 async function fetchRicks() {
   const url = `https://rickandmortyapi.com/api/character/[74,119,118]`;
@@ -33,12 +135,13 @@ async function fetchRicks() {
       boss.push(data[0]);
       boss.push(data[2]);
       boss.push(data[1]);
-      localStorage.setItem("boss", JSON.stringify(boss));
+      localStorage.setItem("alive boss", JSON.stringify(boss));
     });
 }
 
 async function fetchCards() {
   const numberOfCharacters = 826;
+  // const booleanCard = !!cards.legnt
   let num = Math.floor(Math.random() * numberOfCharacters);
   title.innerText = "PICK YOUR DUDE";
 
@@ -78,27 +181,28 @@ async function fetchCards() {
 
 function pickCard(event) {
   const card = event.path[1];
-  const cardId = parseInt(event.path[1].id);
-  account = cards[cardId];
-  account.power = calculatePower(cards[cardId]);
-  account.rank = calculateRank(calculatePower(cards[cardId]));
+  console.log(cards);
+  cardId = parseInt(event.path[1].id);
+  account = cards.find((element) => {
+    if (element.name === event.path[1].querySelector("h3").innerText) {
+      return element;
+    }
+  });
+  console.log("check", account.name);
+  account.power = calculatePower(account);
+  account.rank = calculateRank(calculatePower(account));
   const rankEl = document.createElement("h2");
   rankEl.innerText = account.rank;
   rankEl.style.color = rankColor(account.power);
   card.insertBefore(rankEl, card.querySelector("h3"));
-  title.innerText = `REMAINING CHANCE : ${
+  title.innerText = `LIFE : ${
     !!localStorage.getItem("life") ? localStorage.getItem("life") : 3
   }`;
+  card.classList.add(CLASSNAME_HIDDEN);
+  // localStorage.setItem("cards", JSON.stringify(cards));
+  var children = [].slice.call(scannedEl.children);
+  children.forEach((element) => element.classList.toggle(CLASSNAME_HIDDEN));
 
-  for (let i = 0; i < 5; i++) {
-    if (i === cardId) {
-      cards.splice(i, 1);
-    } else {
-      const item = document.getElementById(i.toString());
-      console.log("hide this", item);
-      item.classList.add(CLASSNAME_HIDDEN);
-    }
-  }
   console.log(card);
   const name = card.querySelector("h3");
   const cardRank = card.querySelector("h2");
@@ -115,47 +219,38 @@ function pickCard(event) {
   }
   scanContainer.appendChild(button);
   button.innerText = "GO";
+
   button.addEventListener("click", () => {
     localStorage.setItem("account", JSON.stringify(account));
-    console.log(account);
-    if (!haveAcc) {
-      localStorage.setItem("life", 5);
+    newGameEl.classList.add(CLASSNAME_HIDDEN);
+    helpButton.classList.add(CLASSNAME_HIDDEN);
+    bgMusic.pause();
+    gameBackgroundVideo.play();
+    container.classList.add("enterGreen");
+    scanContainer.removeChild(button);
+    if (!ispassword) {
+      scanContainer.removeChild(input);
     }
-    localStorage.setItem("remainingRick", 5);
-    if (!password) {
-      localStorage.setItem("password", input.value);
-    }
-    container.classList.remove("greenPortal");
-    initialEl.classList.remove("mainAlign");
-    initialEl.classList.add(CLASSNAME_HIDDEN);
-    grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    localStorage.setItem("password", input.value);
+    scannedEl.removeChild(card);
+    title.classList.add(CLASSNAME_HIDDEN);
+    setTimeout(() => {
+      container.classList.remove("enterGreen");
+      container.classList.remove("greenPortal");
+      gameBackgroundVideo.classList.remove(CLASSNAME_HIDDEN);
+      // container.classList.add("citadelSaved");
+      initialEl.classList.remove("mainAlign");
+      initialEl.classList.add(CLASSNAME_HIDDEN);
+      grantedEl.classList.remove(CLASSNAME_HIDDEN);
+    }, 1500);
     playGame();
+    if (minute === "03") {
+      timeBomb();
+    }
     createProfile(account);
     navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
+    cards = cards.filter((card) => card.name !== account.name);
   });
-}
-
-function init() {
-  const haveDude = !!localStorage.getItem("account");
-  const life = parseInt(localStorage?.getItem("life"));
-  if (!haveDude) {
-    createEl.classList.remove(CLASSNAME_HIDDEN);
-  }
-  if (haveDude) {
-    if (life === 0) {
-      title.innerHTML = "GAMEOVER";
-      localStorage.clear();
-    } else if (!haveDude) {
-      title.innerHTML = "CONTINUE?";
-      createEl.innerText = "GET A NEW DUDE";
-      createEl.classList.remove(CLASSNAME_HIDDEN);
-    } else {
-      title.innerHTML = "CONTINUE?";
-      formEl.classList.remove(CLASSNAME_HIDDEN);
-      password = localStorage.getItem("password");
-      account = JSON.parse(localStorage.getItem("account"));
-    }
-  }
 }
 
 function checkAccount(event) {
@@ -178,7 +273,15 @@ function checkAccount(event) {
 function createAccount() {
   createEl.classList.add(CLASSNAME_HIDDEN);
   scanningEl.classList.remove(CLASSNAME_HIDDEN);
-  fetchCards();
+  if (cards.length === 0) {
+    fetchCards();
+  } else {
+    for (let i = 0; i < cards.length; i++) {
+      const item = document.getElementById(i.toString());
+      console.log("hide this", item);
+      item.classList.remove(CLASSNAME_HIDDEN);
+    }
+  }
   fetchRicks();
 
   // if (data.status !== "Alive" && data.status !== "unknown") {
@@ -240,6 +343,9 @@ function calculateRank(item) {
 }
 
 function createProfile(data) {
+  while (profileEl.firstChild) {
+    profileEl.removeChild(profileEl.firstChild);
+  }
   const power = calculatePower(data);
   const img = document.createElement("img");
   img.src = data.image;
@@ -259,6 +365,12 @@ function createProfile(data) {
   profileEl.classList.remove(CLASSNAME_HIDDEN);
 }
 
+function restartGame() {
+  localStorage.clear();
+  location.reload();
+}
+
 createEl.addEventListener("click", createAccount);
 formEl.addEventListener("submit", checkAccount);
+newGameEl.addEventListener("click", restartGame);
 init();

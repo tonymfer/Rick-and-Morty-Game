@@ -1,9 +1,9 @@
 const deadAccList = document.querySelector("#dead-characters");
 const deadRickList = document.querySelector("#dead-ricks");
 
-function statusInit() {
+function saveList() {
   deadAccounts?.forEach((element) => makeList(element, deadAccList));
-  deadRicks?.forEach((element) => makeList(element, deadRickList));
+  deadBoss?.forEach((element) => makeList(element, deadRickList));
 }
 
 function makeList(item, listType) {

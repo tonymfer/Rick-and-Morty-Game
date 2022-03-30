@@ -8,6 +8,35 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>SAVE CITADEL BY KILLING EVIL MORTY</h2>
+            <p>Rick C-137 is trying to stop Evil Morty from destroying Citadelthere is only 3 MINUTES left until the explosion but Rick can't kill Evil Morty himself because Evil Morty is watching him ALL THE TIME. Your mission should you choose too accept, is simple.</p>
+            <h5>HIRE A DUDE, MAKE HIM STRONG, THEN KILL EVIL MORTY IN 3 MINUTES</h5>
+            <p>pick one of five characters from all the Rick & Morty episodes that are given</p>
+            <p>you have only have 3 LIFE to waste, so choose wisely </p>
+            <p>the earlier the charater showed up from the episodes, the stronger they are</p>
+            <h5>TABLE OF RANK</h5>
+            <p class="rankRickillable">Rickillable---(episode 1~5)</p>
+            <p class="rankA">          A-----------(episode 5~10)</p>
+            <p class="rankB">          B-----------(episode 10~20)</p>
+            <p class="rankC">          C-----------(episode 20~30)</p>
+            <p class="rankTrash">      trash-------(episode 30~40)</p>
+            <p class="rankJerry">      Jerry-------(episode 40~)</p>
+            <p>You have to power up your dude by fighting characters from Rick & Morty episodes</p>
+            <p>Killing two Evil Ricks, and Evil Morty is your only way of saving Citadel, good luck </p>
+        </div>
+    </div>
+    <video id="game-background"class="background-video hidden" >
+        <source src="./img/gamebackground.mp4" type="video/mp4">
+    </video>
+    <video id="gameover"class="background-video hidden" >
+        <source src="./img/citadelboom.mp4" type="video/mp4">
+    </video>
+    <video id="gamewin" class="background-video hidden" >
+        <source src="./img/sound.mp4" type="video/mp4">
+    </video>
     <div id="container" class="container greenPortal">
         <div id="initial" class="mainAlign">
             <h1>SAVE CITADEL</h1>
@@ -21,10 +50,14 @@
                 <div id="scanned" class="hidden cards">
                 </div>
             </div>
+            <div class="mainAlign">
+                <button id="new-game" >NEW GAME</button>
+                <button id="help" >HELP</button>
+            </div>
         </div>
         <div id="access-granted" class="hidden">
           <div class="gridContainer">
-            <div id="tillBoom" class="gridItem"></div>
+            <div id="tillBoom" class="gridItem" ></div>
             
             <div id ="profile" class="gridItem">
                 <h1>UR DUDE</h1>
@@ -45,7 +78,7 @@
                     <div>
                         <h1>FIGHT TO LEVEL UP</h1>
                         <div id="levelUp">
-                            <img class="rankA"/>
+                            <img />
                             <h3></h3>
                             <h2></h2>
                             <p></p>

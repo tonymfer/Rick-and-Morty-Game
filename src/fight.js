@@ -14,29 +14,31 @@ const rickName = document.querySelector("#kill-this-rick h3");
 const rickPower = document.querySelector("#kill-this-rick h2");
 const killRick = document.querySelector("#challenge");
 
-const DEAD_RICK_KEY = "dead Ricks";
-const ALIVE_RICK_KEY = "alive Ricks";
+const DEAD_BOSS_KEY = "dead boss";
+const ALIVE_BOSS_KEY = "alive boss";
 const DEAD_ACCOUNTS_KEY = "dead account";
-let aliveboss = [];
-let deadRicks = [];
+let aliveBoss = [];
+let deadBoss = [];
 let currentAccount = {};
 let deadAccounts = [];
-let currentRick = {};
+let currentBoss = {};
 let monsterPower;
 let monsterRank;
 let life;
+
 function playGame() {
   console.log("continue game");
   if (!!localStorage.getItem(DEAD_ACCOUNTS_KEY)) {
     deadAccounts = JSON.parse(localStorage?.getItem(DEAD_ACCOUNTS_KEY));
   }
-  deadRicks = JSON.parse(localStorage?.getItem(DEAD_RICK_KEY));
-  aliveRicks = JSON.parse(localStorage?.getItem(ALIVE_RICK_KEY));
+  const a = localStorage.getItem(DEAD_BOSS_KEY);
+  deadBoss = a ? JSON.parse(a) : [];
+  aliveBoss = JSON.parse(localStorage?.getItem(ALIVE_BOSS_KEY));
   life = localStorage.getItem("life");
 
   currentAccount = JSON.parse(localStorage.getItem("account"));
   pickRick();
-  statusInit();
+  saveList();
   // setTimeout(pickRick(), 2000);
 }
 
@@ -58,8 +60,8 @@ function newGame() {
 function saveEverything() {
   localStorage.setItem("life", life);
   localStorage.setItem("password", password);
-  localStorage.setItem(DEAD_RICK_KEY, JSON.stringify(deadRicks));
-  localStorage.setItem(ALIVE_RICK_KEY, JSON.stringify(aliveRicks));
+  localStorage.setItem(DEAD_BOSS_KEY, JSON.stringify(deadBoss));
+  localStorage.setItem(ALIVE_BOSS_KEY, JSON.stringify(aliveBoss));
   localStorage.setItem(DEAD_ACCOUNTS_KEY, JSON.stringify(deadAccounts));
 }
 
@@ -94,12 +96,14 @@ function getRicks(event) {
 
 function userKilled() {
   life = life - 1;
-  console.log(deadAccounts, currentAccount);
   deadAccounts.unshift(currentAccount);
-  console.log(deadAccounts, currentAccount);
   localStorage.removeItem("account");
+  ispassword = true;
   saveEverything();
-  location.reload();
+  grantedEl.classList.add(CLASSNAME_HIDDEN);
+  initialEl.classList.remove(CLASSNAME_HIDDEN);
+  // scannedEl.children.foreach((item) => item.classList.remove(CLASSNAME_HIDDEN));
+  init();
 }
 
 function updateUserPower() {
@@ -138,28 +142,29 @@ function fightMonster() {
     updateUserPower();
   } else {
     userKilled();
-    alert("you are dead!");
   }
 }
 
 function fightRick() {
-  if (currentAccount.power <= currentRick.power) {
-    user.power = user.power - 1;
-    deadRicks.push(currentRick);
-    pickRick();
+  if (currentAccount.power <= currentBoss.power) {
+    currentAccount.power = currentAccount.power - 1;
+    rickKilled();
+    // pickRick();
   } else {
     userKilled();
-    alert("you are dead!");
   }
 }
 
-function rickKilled(event) {
-  const li = event.target.parentElement;
-
-  setTimeout(li.remove(), 2000);
-  ricks = ricks.filter((rick) => rick.id !== parseInt(li.id));
+function rickKilled() {
+  deadBoss.push(currentBoss);
+  aliveBoss = aliveBoss.filter((boss) => boss.id !== currentBoss.id);
+  currentBoss = aliveBoss[0];
   saveList();
+  rickPicture.src = currentBoss.image;
+  rickName.innerText = `${currentBoss.name}(${currentBoss.status})`;
+  rickPower.innerText = "POWER LEVEL: Rickillable";
 }
+
 function random() {
   const randomCharacter = Math.floor(Math.random() * 826);
   return randomCharacter;
@@ -187,16 +192,28 @@ async function createMonster() {
     });
 }
 function pickRick() {
-  const randomNumber = Math.floor(Math.random() * aliveRicks.length);
-  // console.log(aliveRicks);
-  currentRick = aliveRicks[randomNumber];
-  currentRick.rickNumber = randomNumber;
-  currentRick.power = Math.random() * 5;
+  const id = 3 - aliveBoss.length;
+  // console.log(aliveBoss);
+  currentBoss = aliveBoss[id];
+  currentBoss.bossNumber = id;
+  currentBoss.power = 5 - 2 * id;
 
-  rickPicture.src = currentRick.image;
-  rickName.innerText = `${currentRick.name}(${currentRick.status})`;
+  rickPicture.src = currentBoss.image;
+  rickName.innerText = `${currentBoss.name}(${currentBoss.status})`;
   rickPower.innerText = "POWER LEVEL: Rickillable";
 }
+
+// function pickRick() {
+//   const randomNumber = Math.floor(Math.random() * aliveBoss.length);
+//   // console.log(aliveBoss);
+//   currentBoss = aliveBoss[randomNumber];
+//   currentBoss.rickNumber = randomNumber;
+//   currentBoss.power = Math.random() * 5;
+
+//   rickPicture.src = currentBoss.image;
+//   rickName.innerText = `${currentBoss.name}(${currentBoss.status})`;
+//   rickPower.innerText = "POWER LEVEL: Rickillable";
+// }
 
 createMonster();
 

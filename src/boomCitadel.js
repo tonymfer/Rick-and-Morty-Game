@@ -1,5 +1,7 @@
 const clockTitle = document.querySelector("#tillBoom");
 
+clockTitle.classList.add("bigFont");
+
 let minute = "03";
 let second = "00";
 let currentMin = 3;
@@ -19,7 +21,7 @@ function tillCitadelBoom() {
   // const hour = shapeTime(24, currentHour);
 
   clockTitle.innerText = `CITADEL EXPLODES IN 00:${minute}:${second}`;
-  console.log(clockTitle.innerText);
+  // console.log(clockTitle.innerText);
 }
 
 function shapeSec() {
@@ -42,10 +44,29 @@ function shapeMin() {
     minute = String(currentMin).padStart(2, "0");
   }
 }
+function timeBomb() {
+  setInterval(shapeSec, 1000);
+  setInterval(shapeMin, 60000);
+  setInterval(tillCitadelBoom, 1000);
+  shapeSec();
+  shapeMin();
+  tillCitadelBoom();
+  setTimeout(() => {
+    grantedEl.classList.add(CLASSNAME_HIDDEN);
+    title.innerHTML = "GAMEOVER";
+    localStorage.clear();
+    initialEl.classList.remove(CLASSNAME_HIDDEN);
+    gameBackgroundVideo.pause();
+    gameOverVideo.classList.remove(CLASSNAME_HIDDEN);
+    gameBackgroundVideo.classList.add(CLASSNAME_HIDDEN);
+    gameOverVideo.play();
+    gameoverMusic.play();
 
-// setInterval(shapeSec, 1000);
-// setInterval(shapeMin, 60000);
-// setInterval(tillCitadelBoom, 1000);
-// shapeSec();
-// shapeMin();
-// tillCitadelBoom();
+    setTimeout(() => {
+      title.classList.remove(CLASSNAME_HIDDEN);
+    }, 6000);
+    setTimeout(() => {
+      newGameEl.classList.remove(CLASSNAME_HIDDEN);
+    }, 8000);
+  }, 1000 * 60 * 3);
+}
