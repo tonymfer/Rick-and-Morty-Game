@@ -211,7 +211,8 @@ function pickCard(event) {
   children.forEach((element) => element.classList.toggle(CLASSNAME_HIDDEN));
 
   console.log(card);
-  const name = card.querySelector("h3");
+  let name = card.querySelector("h3");
+  name.innerText += `- Season.${account.power}`;
   const cardRank = card.querySelector("h2");
   const image = card.querySelector("img");
 

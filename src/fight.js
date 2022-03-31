@@ -109,7 +109,7 @@ function userKilled() {
 function updateUserPower() {
   const rank = document.querySelector("#profileEl h2");
   rank.innerText = `POWER LEVEL: ${calculateRank(currentAccount.power)}`;
-  rank.style.color = rankColor(power);
+  rank.style.color = rankColor(currentAccount.power);
 }
 
 function exp(item) {
@@ -188,7 +188,10 @@ async function createMonster() {
         console.log(monsterPower);
         picture.src = data.image;
         soldierName.innerText = `${data.name}(${data.status})`;
-        setTimeout((power.innerText = `POWER LEVEL: ${monsterRank}`), 1500);
+        setTimeout(
+          () => (power.innerText = `POWER LEVEL: ${monsterRank}`),
+          1500
+        );
         power.style.color = rankColor(monsterPower);
       }
     });
