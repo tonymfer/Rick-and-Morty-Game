@@ -38,7 +38,7 @@ function playGame() {
 
   currentAccount = JSON.parse(localStorage.getItem("account"));
   pickRick();
-  saveList();
+  // saveList();
   // setTimeout(pickRick(), 2000);
 }
 
@@ -107,9 +107,9 @@ function userKilled() {
 }
 
 function updateUserPower() {
-  document.querySelector(
-    "#profileEl h2"
-  ).innerText = `POWER LEVEL: ${calculateRank(currentAccount.power)}`;
+  const rank = document.querySelector("#profileEl h2");
+  rank.innerText = `POWER LEVEL: ${calculateRank(currentAccount.power)}`;
+  rank.style.color = rankColor(power);
 }
 
 function exp(item) {
@@ -117,13 +117,15 @@ function exp(item) {
     case "rickillable":
       return 1;
     case "A":
-      return 0.5;
+      return 0.3;
     case "B":
       return 0.2;
     case "C":
       return 0.1;
     case "trash":
       return 0.05;
+    case "Jerry":
+      return 0.01;
   }
 }
 
@@ -134,7 +136,7 @@ function fightMonster() {
       currentAccount.power = currentAccount.power - 0.5;
       console.log("5!!!!!!!!!!!!");
     } else {
-      currentAccount.power = currentAccount.power - 0.1;
+      currentAccount.power = currentAccount.power - 0.3;
       console.log("1!!!!!!!!!!!!!");
     }
     console.log(currentAccount.power);
@@ -149,7 +151,6 @@ function fightRick() {
   if (currentAccount.power <= currentBoss.power) {
     currentAccount.power = currentAccount.power - 1;
     rickKilled();
-    // pickRick();
   } else {
     userKilled();
   }
@@ -159,7 +160,7 @@ function rickKilled() {
   deadBoss.push(currentBoss);
   aliveBoss = aliveBoss.filter((boss) => boss.id !== currentBoss.id);
   currentBoss = aliveBoss[0];
-  saveList();
+  // saveList();
   rickPicture.src = currentBoss.image;
   rickName.innerText = `${currentBoss.name}(${currentBoss.status})`;
   rickPower.innerText = "POWER LEVEL: Rickillable";
@@ -187,20 +188,25 @@ async function createMonster() {
         console.log(monsterPower);
         picture.src = data.image;
         soldierName.innerText = `${data.name}(${data.status})`;
-        power.innerText = `POWER LEVEL: ${monsterRank}`;
+        setTimeout((power.innerText = `POWER LEVEL: ${monsterRank}`), 1500);
+        power.style.color = rankColor(monsterPower);
       }
     });
 }
 function pickRick() {
-  const id = 3 - aliveBoss.length;
+  let stat = 0;
   // console.log(aliveBoss);
-  currentBoss = aliveBoss[id];
-  currentBoss.bossNumber = id;
-  currentBoss.power = 5 - 2 * id;
+  currentBoss = aliveBoss[0];
+  currentBoss.bossNumber = stat;
+  // currentBoss.power = 5 - 1.5 * stat;
 
   rickPicture.src = currentBoss.image;
+  rickPicture.style.width = "16vw";
   rickName.innerText = `${currentBoss.name}(${currentBoss.status})`;
   rickPower.innerText = "POWER LEVEL: Rickillable";
+  rickPower.style.color = rankColor(1);
+  stat = stat + 1;
+  console.log(currentBoss.power);
 }
 
 // function pickRick() {

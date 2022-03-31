@@ -25,7 +25,12 @@ title.classList.add("bigFont");
 const gameOverVideo = document.querySelector("#gameover");
 const gameWinVideo = document.querySelector("#gameWin");
 const gameBackgroundVideo = document.querySelector("#game-background");
-const bgMusic = new Audio("/img/timeisout.mp3");
+const bgMusic = new Howl({
+  src: ["/img/timeisout.mp3"],
+  autoplay: true,
+  loop: true,
+  volume: 1,
+});
 const gameoverMusic = new Audio("/img/lostalllife.mp3");
 bgMusic.play();
 
@@ -58,8 +63,6 @@ function init() {
   const win =
     !localStorage.getItem("alive boss") && !!localStorage.getItem("dead boss");
   if (!saved) {
-    localStorage.setItem("life", 3);
-    localStorage.setItem("remainingRick", 3);
     createEl.classList.remove(CLASSNAME_HIDDEN);
     newGameEl.classList.add(CLASSNAME_HIDDEN);
   }
@@ -135,6 +138,10 @@ async function fetchRicks() {
       boss.push(data[0]);
       boss.push(data[2]);
       boss.push(data[1]);
+      boss[0].power = 4;
+      boss[1].power = 1;
+      boss[2].power = -10;
+      console.log(boss);
       localStorage.setItem("alive boss", JSON.stringify(boss));
     });
 }
@@ -192,7 +199,7 @@ function pickCard(event) {
   account.power = calculatePower(account);
   account.rank = calculateRank(calculatePower(account));
   const rankEl = document.createElement("h2");
-  rankEl.innerText = account.rank;
+  rankEl.innerText = `POWER LEVEL: ${account.rank}`;
   rankEl.style.color = rankColor(account.power);
   card.insertBefore(rankEl, card.querySelector("h3"));
   title.innerText = `LIFE : ${
@@ -248,7 +255,7 @@ function pickCard(event) {
       timeBomb();
     }
     createProfile(account);
-    navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
+    // navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
     cards = cards.filter((card) => card.name !== account.name);
   });
 }
@@ -259,18 +266,22 @@ function checkAccount(event) {
   // if (true) {
   if (input === password) {
     container.classList.remove("greenPortal");
+    gameBackgroundVideo.play();
     initialEl.classList.add(CLASSNAME_HIDDEN);
+    scannedEl.classList.add(CLASSNAME_HIDDEN);
     grantedEl.classList.remove(CLASSNAME_HIDDEN);
     playGame();
     createProfile(account);
     // console.log(account);
-    navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
+    // navigator.geolocation.getCurrentPosition(window.myLocation, onGeoError);
   } else {
     alert("NICE TRY EVIL MORTY, I AM WATCHING YOU");
   }
 }
 
 function createAccount() {
+  localStorage.setItem("life", 3);
+  localStorage.setItem("remainingRick", 3);
   createEl.classList.add(CLASSNAME_HIDDEN);
   scanningEl.classList.remove(CLASSNAME_HIDDEN);
   if (cards.length === 0) {
@@ -353,6 +364,7 @@ function createProfile(data) {
   h3.innerText = `${data.name}`;
   const rank = document.createElement("h2");
   rank.innerText = `POWER LEVEL: ${calculateRank(power)}`;
+  rank.style.color = rankColor(power);
   const gender = document.createElement("p");
   gender.innerText = `GENDER: ${data.gender}`;
   const species = document.createElement("p");

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -25,6 +26,7 @@
             <p class="rankTrash">      trash-------(episode 30~40)</p>
             <p class="rankJerry">      Jerry-------(episode 40~)</p>
             <p>You have to power up your dude by fighting characters from Rick & Morty episodes</p>
+            <p>TIP: You get a lot more EXP if you win against the characters with same Rank as your Dude</p>
             <p>Killing two Evil Ricks, and Evil Morty is your only way of saving Citadel, good luck </p>
         </div>
     </div>
@@ -86,23 +88,17 @@
                             <button id="runaway">JERRY</button>
                         </div>
                     </div>
-                    <div id="kill-this-rick" >
-                        <img />
-                        <h3></h3>
-                        <h2></h2>
-                        <p></p>
-                        <button id="challenge">KILL RICK</button>
-                    </div>
+                   
                 </div>
             </div>
             <div class="gridItem">
-                <h3>R.I.P</h3>
-                <form id="dead-characters" >
-                </form>
-                <h3>G.T.H(GO TO HELL)</h3>
-                <form id="dead-ricks" >
-                </form>
-                
+                <div id="kill-this-rick">
+                    <img />
+                    <h3></h3>
+                    <h2></h2>
+                    <p></p>
+                    <button id="challenge">KILL RICK</button>
+                </div>
             </div>
           </div>
         </div>
@@ -113,5 +109,6 @@
     <script src="src/weather.js"></script>
     <script src="src/boomCitadel.js"></script>
     <script src="src/status.js"></script>
+
 </body>
 </html>
