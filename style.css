@@ -2,15 +2,31 @@
   display: none;
 }
 
+.block {
+  display: block;
+}
+
+@font-face {
+  font-family: schwifty;
+  src: url(./img/get_schwifty.ttf);
+}
+@font-face {
+  font-family: mainFont;
+  src: url(./ScribbleNoteDemoRegular-RpqoE.otf);
+}
 body {
   height: 100vh;
   width: 100%;
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  color: white;
+  font-family: mainFont;
+  background-color: black;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; */
+  color: rgba(255, 255, 255, 0.847);
+  /* margin: 5%; */
 }
 
 li {
@@ -18,23 +34,45 @@ li {
 }
 
 button {
-  font-size: 2vw;
+  font-size: 2.5vw;
   background-color: greenyellow;
   align-items: center;
   border-radius: 10px;
   border-color: green;
   border-width: 5px;
-  margin: 1vh;
+  margin: 1vw;
 }
 
-.bigFont {
-  font-size: 9vw;
+.buttonKill {
+  font-size: 2.5vw;
+  background-color: red;
+  align-items: center;
+  border-radius: 10px;
+  border-color: darkred;
+  border-width: 5px;
+  margin: 1vw;
+}
+
+.gameOver {
+  font-size: 11vw;
   font-weight: bolder;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.popUp {
+  font-size: 5vw;
+  font-weight: bolder;
+  margin: 0%;
   /* color: whi; */
 }
 
 .cards {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   flex-direction: row;
 }
 
@@ -42,18 +80,75 @@ input {
   font-size: 2vw;
 }
 
+.RickAndMortySpan {
+  -webkit-text-stroke: 2px yellow;
+  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+  /* text-shadow: -3px 0 yellow, 0 3px yellow, 3px 0 yellow, 0 -3px yellow; */
+
+  color: rgb(2, 182, 176);
+  /* color: yellow; */
+  /* font-weight: 9000; */
+  font-size: 1000em;
+}
+
+.RickAndMorty {
+  -webkit-text-stroke: 1px yellow;
+  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000, 0px 1px 0 #000, 0px -1px 0 #000, -1px 0px 0 #000,
+    1px 0px 0 #000, 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000,
+    -2px -2px 0 #000, 0px 2px 0 #000, 0px -2px 0 #000, -2px 0px 0 #000,
+    2px 0px 0 #000, 1px 2px 0 #000, -1px 2px 0 #000, 1px -2px 0 #000,
+    -1px -2px 0 #000, 2px 1px 0 #000, -2px 1px 0 #000, 2px -1px 0 #000,
+    -2px -1px 0 #000;
+  /* text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black; */
+  /* text-shadow: -3px 0 yellow, 0 3px yellow, 3px 0 yellow, 0 -3px yellow; */
+  font-family: schwifty;
+
+  color: rgba(2, 182, 176, 0.82);
+  /* color: yellow; */
+  font-weight: 9000;
+  font-size: 7vw;
+  margin: 5vh;
+}
+
+.changeTitle {
+  /* -webkit-text-stroke: 1px rgb(163, 0, 0); */
+  /* text-shadow: 2px, 2px, 0white; */
+  /* color: rgb(2, 182, 176); */
+  color: rgb(255, 255, 126);
+  font-weight: bloder;
+  font-size: 5vw;
+  max-width: 50vw;
+}
+
+.gameTitle {
+  -webkit-text-stroke: 3px rgb(0, 0, 0);
+  font-family: schwifty;
+  /* text-shadow: 2px, 2px, 0white; */
+  /* color: rgb(2, 182, 176); */
+  color: rgb(215, 215, 68);
+  font-weight: bloder;
+  font-size: 17vw;
+  max-width: 50vw;
+  transition: color 0.1s linear;
+}
+
+.gameTitle:hover {
+  color: red;
+}
+
 img {
-  transition: 1s;
   transition: filter 1s linear;
-  border: 2px solid greenyellow;
-  border-radius: 4px;
-  padding: 5px;
-  margin: 10px;
-  width: 12vw;
+  border: 3px solid greenyellow;
+  border-radius: 7px;
+  /* padding: 5px; */
+  margin: 1px;
+  width: 21vw;
+  max-width: 170px;
 }
 
 img:hover {
-  border: 2px solid yellow;
+  border: 6px solid yellow;
 }
 
 .blur {
@@ -84,6 +179,7 @@ img:hover {
 
 .mainAlign {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -99,7 +195,7 @@ img:hover {
   background-image: url(https://cdna.artstation.com/p/assets/images/images/031/538/850/original/petro-kosariekov-portal-gun-rick-and-morty2-2.gif?1603902186);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 30vw;
+  background-size: 36vw;
   transition: background-size 1300ms linear;
 }
 
@@ -123,10 +219,10 @@ img:hover {
 
 .gridContainer {
   display: grid;
-  grid-template-columns: 3fr 6fr 3fr;
-  grid-template-rows: repeat(2, minmax(50px, auto));
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, minmax(50px, auto));
   gap: 5px 5px;
-  place-items: start center;
+  /* place-items: start center; */
   border-color: white;
   border-width: 10px;
 }
@@ -138,33 +234,47 @@ img:hover {
 .gridItem:nth-child(1) {
   grid-column: 1/4;
   grid-row: 1/1;
+  place-self: end center;
+}
+
+.gridItem:nth-child(2) {
+  grid-column: 1/4;
+  grid-row: 2/2;
+  place-self: center center;
+}
+.gridItem:nth-child(3) {
+  place-self: start end;
+}
+
+.gridItem:nth-child(4) {
+  place-self: start start;
 }
 
 .rankRickillable {
+  border-width: 10px;
+  border-color: rgb(255, 80, 80);
+  color: rgb(255, 80, 80);
+}
+
+.rankA {
   border-width: 10px;
   border-color: rgb(80, 255, 255);
   color: rgb(80, 255, 255);
 }
 
-.rankA {
+.rankB {
   border-width: 10px;
   border-color: yellow;
   color: yellow;
 }
 
-.rankB {
-  border-width: 10px;
-  border-color: paleturquoise;
-  color: paleturquoise;
-}
-
 .rankC {
   border-width: 10px;
-  border-color: darkolivegreen;
-  color: darkolivegreen;
+  border-color: rgb(186, 129, 82);
+  color: rgb(186, 129, 82);
 }
 
-.rankTrash {
+.rankGarbage {
   border-width: 10px;
   border-color: darkgray;
   color: darkgrey;
@@ -172,8 +282,8 @@ img:hover {
 
 .rankJerry {
   border-width: 10px;
-  border-color: black;
-  color: black;
+  border-color: white;
+  color: white;
 }
 
 .modal {
@@ -225,4 +335,38 @@ h5 {
 
 h2 {
   color: yellowgreen;
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+}
+h1 {
+  margin: 0%;
+}
+
+.killed {
+  animation-duration: 1s;
+  transition: filter 1s ease-in;
+  animation-timing-function: ease-out;
+}
+
+@-webkit-keyframes moveDown {
+  from {
+    /* right: 0px; */
+    background-color: red;
+  }
+  to {
+    top: 100vh;
+    background-color: rgb(254, 168, 168);
+  }
+}
+
+.invert {
+  -webkit-filter: invert(80%);
+  filter: invert(80%);
+  /* -webkit-filter: saturate(7);
+  filter: saturate(7); */
+
+  transition: filter 0.2s linear;
 }

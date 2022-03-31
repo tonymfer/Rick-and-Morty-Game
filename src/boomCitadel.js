@@ -21,6 +21,10 @@ function tillCitadelBoom() {
   // const hour = shapeTime(24, currentHour);
 
   clockTitle.innerText = `CITADEL EXPLODES IN 00:${minute}:${second}`;
+  clockTitle.style.fontSize = "10vw";
+  if (minute === "00") {
+    clockTitle.style.color = "red";
+  }
   // console.log(clockTitle.innerText);
 }
 
@@ -54,6 +58,8 @@ function timeBomb() {
   setTimeout(() => {
     grantedEl.classList.add(CLASSNAME_HIDDEN);
     title.innerHTML = "GAMEOVER";
+    title.classList.remove("gameTitle");
+    title.classList.add("gameOver");
     localStorage.clear();
     initialEl.classList.remove(CLASSNAME_HIDDEN);
     gameBackgroundVideo.pause();

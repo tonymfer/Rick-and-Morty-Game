@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.js"></script>
     <title>Document</title>
 </head>
@@ -13,7 +14,8 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>SAVE CITADEL BY KILLING EVIL MORTY</h2>
-            <p>Rick C-137 is trying to stop Evil Morty from destroying Citadel. There is only 3 MINUTES left before the explosion but Rick can't kill Evil Morty himself because Evil Morty is watching him ALL THE TIME. Your mission should you choose too accept, is simple.</p>
+            <p>Rick C-137 is trying to stop Evil Morty from destroying Citadel. There is only 3 MINUTES left before the explosion but Rick can't kill Evil Morty himself because Evil Morty is watching him ALL THE TIME. </p>
+            <p>Your mission should you choose too accept, is simple.</p>
             <h5>HIRE A DUDE, MAKE HIM STRONG, THEN KILL EVIL MORTY IN 3 MINUTES</h5>
             <p>pick one of five characters from all the Rick & Morty episodes that are given</p>
             <p>you have only have 3 LIFE to waste, so choose wisely </p>
@@ -23,7 +25,7 @@
             <p class="rankA">          A-----------(episode 5~10)</p>
             <p class="rankB">          B-----------(episode 10~20)</p>
             <p class="rankC">          C-----------(episode 20~30)</p>
-            <p class="rankTrash">      trash-------(episode 30~40)</p>
+            <p class="rankGarbage">    garbage-------(episode 30~40)</p>
             <p class="rankJerry">      Jerry-------(episode 40~)</p>
             <p>You have to power up your dude by fighting characters from Rick & Morty episodes</p>
             <p>TIP: You get a lot more EXP if you win against the characters with same Rank as your Dude</p>
@@ -41,10 +43,13 @@
     </video>
     <div id="container" class="container greenPortal">
         <div id="initial" class="mainAlign">
-            <h1>SAVE CITADEL</h1>
+            <div id="RAM" class="RickAndMorty " >
+               <div class="animate__animated animate__heartBeat"> Rick and Morty</div>
+            </div>
+            <div id="game-title"class="gameTitle animate__animated animate__zoomInDown" >SAVE CITADEL</div>
             <form id="login" class="hidden">
-                <input id="pw" maxlength=15 placeholder="ENTER CODE" ></input>
-                <button>ENTER</button>
+                <!-- <input id="pw" maxlength=15 placeholder="ENTER CODE" ></input> -->
+                <button>YES</button>
             </form>
             <button id="create-account" class="hidden">PLAY</button>
             <h2 id="scanning" class="hidden">Bringing Cards...</h2>
@@ -60,16 +65,26 @@
         <div id="access-granted" class="hidden">
           <div class="gridContainer">
             <div id="tillBoom" class="gridItem" ></div>
-            
+            <div class="gridItem">
+                <div id="kill-this-rick">
+                    <img />
+                    <h1 id="boss-power"></h1>
+                    <h1 id="boss-name"></h1>
+                    <button id="challenge" class="buttonKill">KILL</button>
+                </div>
+            </div>
             <div id ="profile" class="gridItem">
-                <h1>UR DUDE</h1>
+                <h1 id="ur-dude">UR DUDE</h1>
+                <h1 id="levelUpp" class="hidden popUp" style="color: yellow">LEVEL UP!</h1>
+                <h1 id="doublexp" class="hidden popUp" style="color: red">X2 EXP</h1>
+                <h1 id="boss-killed" class="hidden popUp" style="color: yellow">NICE SHOT!!</h1>
                 <div id="profileEl"></div>
-                <h3>YOUR CURRENT LOCATION</h3>
+                <!-- <h3>YOUR CURRENT LOCATION</h3> -->
                 <div id="description">
                   <li>
                     <ul id="planet"></ul>
                     <ul id="longLat" ></ul>
-                    <ul id="country" >ANALYZING...</ul>
+                    <!-- <ul id="country" >ANALYZING...</ul> -->
                     <ul id="weather" ></ul>
 
                   </li>
@@ -78,28 +93,20 @@
             <div id="kill-rick" class="gridItem">
                 <div>
                     <div>
-                        <h1>FIGHT TO LEVEL UP</h1>
                         <div id="levelUp">
+                            <h1 style="color: red">ENEMY</h1>
                             <img />
-                            <h3></h3>
-                            <h2></h2>
+                            <h1 id="monster-power"></h1>
+                            <h1 id="monster-name"></h1>
                             <p></p>
-                            <button id="fightMob">FIGHT</button>
+                            <button id="fightMob" class="buttonKill">KILL</button>
                             <button id="runaway">JERRY</button>
                         </div>
                     </div>
                    
                 </div>
             </div>
-            <div class="gridItem">
-                <div id="kill-this-rick">
-                    <img />
-                    <h3></h3>
-                    <h2></h2>
-                    <p></p>
-                    <button id="challenge">KILL RICK</button>
-                </div>
-            </div>
+            
           </div>
         </div>
     </div>

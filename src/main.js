@@ -9,18 +9,20 @@ const grantedEl = document.querySelector("#access-granted");
 const scannedEl = document.querySelector("#scanned");
 const scanContainer = document.querySelector("#cards-container");
 const cardEl = scannedEl.querySelector("div");
+const urDude = document.querySelector("ur-dude");
 // const card2 = scannedEl.querySelector("#card2");
 // const card3 = scannedEl.querySelector("#card3");
 // const card4 = scannedEl.querySelector("#card4");
 // const card5 = scannedEl.querySelector("#card5");
 const body = document.querySelector("body");
 const container = document.querySelector("#container");
-const title = initialEl.querySelector("h1");
+const title = document.querySelector("#game-title");
+const rickAndMorty = document.querySelector("#RAM");
 const newGameEl = document.querySelector("#new-game");
 const modal = document.querySelector("#myModal");
 const helpButton = document.querySelector("#help");
 const closeButton = document.getElementsByClassName("close")[0];
-title.classList.add("bigFont");
+// title.classList.add("bigFosnt");
 
 const gameOverVideo = document.querySelector("#gameover");
 const gameWinVideo = document.querySelector("#gameWin");
@@ -56,6 +58,7 @@ window.onclick = function (event) {
 };
 
 function init() {
+  // setTimeout(() => title.css("-webkit-animation-name", "moveDown"), 100);
   const saved = !!localStorage.getItem("life");
   const dead = !localStorage.getItem("account");
   const paused = !dead;
@@ -97,6 +100,8 @@ function init() {
           newGameEl.classList.remove(CLASSNAME_HIDDEN);
         }, 9000);
         title.innerHTML = "GAMEOVER";
+        title.classList.remove("gameTitle");
+        title.classList.add("gameOver");
         initialEl.classList.remove(CLASSNAME_HIDDEN);
         gameBackgroundVideo.classList.add(CLASSNAME_HIDDEN);
         gameBackgroundVideo.pause();
@@ -115,6 +120,8 @@ function init() {
         );
 
         title.innerText = `LIFE : ${localStorage.getItem("life")}`;
+        title.classList.remove("gameTitle");
+        title.classList.add("changeTitle");
         initialEl.classList.remove(CLASSNAME_HIDDEN);
         createEl.classList.add(CLASSNAME_HIDDEN);
         console.log(cards);
@@ -151,6 +158,8 @@ async function fetchCards() {
   // const booleanCard = !!cards.legnt
   let num = Math.floor(Math.random() * numberOfCharacters);
   title.innerText = "PICK YOUR DUDE";
+  title.classList.remove("gameTitle");
+  title.classList.add("changeTitle");
 
   const url = `https://rickandmortyapi.com/api/character/${num}`;
   if (cards.length < 5) {
@@ -163,7 +172,7 @@ async function fetchCards() {
           cards.push(data);
 
           const img = document.createElement("img");
-          const h3 = document.createElement("h3");
+          const h3 = document.createElement("h1");
 
           img.src = data.image;
           img.classList.add("blur");
@@ -191,7 +200,7 @@ function pickCard(event) {
   console.log(cards);
   cardId = parseInt(event.path[1].id);
   account = cards.find((element) => {
-    if (element.name === event.path[1].querySelector("h3").innerText) {
+    if (element.name === event.path[1].querySelector("h1").innerText) {
       return element;
     }
   });
@@ -199,22 +208,35 @@ function pickCard(event) {
   account.power = calculatePower(account);
   account.rank = calculateRank(calculatePower(account));
   const rankEl = document.createElement("h2");
-  rankEl.innerText = `POWER LEVEL: ${account.rank}`;
-  rankEl.style.color = rankColor(account.power);
-  card.insertBefore(rankEl, card.querySelector("h3"));
+  rankEl.innerText = `LEVEL: ${account.rank}`;
+  rankEl.classList.add(rankColor(account.power));
+  rankEl.style.fontSize = "5vw";
+  card.insertBefore(rankEl, card.querySelector("h1"));
   title.innerText = `LIFE : ${
     !!localStorage.getItem("life") ? localStorage.getItem("life") : 3
   }`;
+  title.style.fontSize = "5vw";
   card.classList.add(CLASSNAME_HIDDEN);
   // localStorage.setItem("cards", JSON.stringify(cards));
   var children = [].slice.call(scannedEl.children);
   children.forEach((element) => element.classList.toggle(CLASSNAME_HIDDEN));
 
   console.log(card);
-  let name = card.querySelector("h3");
+  let name = card.querySelector("h1");
   name.innerText += `- Season.${account.power}`;
   const cardRank = card.querySelector("h2");
   const image = card.querySelector("img");
+  image.disabled = true;
+  const gender = document.createElement("a");
+  gender.innerText = `GENDER: ${account.gender}`;
+  gender.style.fontSize = "3vw";
+  const species = document.createElement("a");
+  species.innerText = `SPECIES: ${account.species}`;
+  const status = document.createElement("a");
+  status.innerText = `STATUS: ${account.status}`;
+  const homeAddress = document.createElement("a");
+  homeAddress.innerText = `HOME: ${account.location.name}`;
+  card.appendChild(gender, species, status, homeAddress);
 
   name.classList.remove(CLASSNAME_HIDDEN);
   cardRank.classList.remove(CLASSNAME_HIDDEN);
@@ -223,23 +245,24 @@ function pickCard(event) {
   const input = document.createElement("input");
   input.placeholder = "enter your screte code";
   if (!ispassword) {
-    scanContainer.appendChild(input);
+    // scanContainer.appendChild(input);
   }
   scanContainer.appendChild(button);
   button.innerText = "GO";
-
+  // image.classList.add("invert");
   button.addEventListener("click", () => {
     localStorage.setItem("account", JSON.stringify(account));
     newGameEl.classList.add(CLASSNAME_HIDDEN);
     helpButton.classList.add(CLASSNAME_HIDDEN);
+    rickAndMorty.classList.add(CLASSNAME_HIDDEN);
     bgMusic.pause();
     gameBackgroundVideo.play();
     container.classList.add("enterGreen");
     scanContainer.removeChild(button);
     if (!ispassword) {
-      scanContainer.removeChild(input);
+      // scanContainer.removeChild(input);
     }
-    localStorage.setItem("password", input.value);
+    // localStorage.setItem("password", input.value);
     scannedEl.removeChild(card);
     title.classList.add(CLASSNAME_HIDDEN);
     setTimeout(() => {
@@ -250,7 +273,7 @@ function pickCard(event) {
       initialEl.classList.remove("mainAlign");
       initialEl.classList.add(CLASSNAME_HIDDEN);
       grantedEl.classList.remove(CLASSNAME_HIDDEN);
-    }, 1500);
+    }, 1200);
     playGame();
     if (minute === "03") {
       timeBomb();
@@ -265,7 +288,8 @@ function checkAccount(event) {
   event.preventDefault();
   const input = pwEl.value;
   // if (true) {
-  if (input === password) {
+  // if (input === password) {
+  if (true) {
     container.classList.remove("greenPortal");
     gameBackgroundVideo.play();
     initialEl.classList.add(CLASSNAME_HIDDEN);
@@ -324,17 +348,17 @@ function calculatePower(item) {
 
 function rankColor(item) {
   if (item <= 5) {
-    return "red";
+    return "rankRickillable";
   } else if (item <= 10) {
-    return "yellow";
+    return "ranA";
   } else if (item <= 20) {
-    return "blue";
+    return "rankB";
   } else if (item <= 30) {
-    return "";
+    return "rankC";
   } else if (item <= 40) {
-    return "brown";
+    return "rankGarbage";
   } else {
-    return "green";
+    return "rankJerry";
   }
 }
 
@@ -361,20 +385,16 @@ function createProfile(data) {
   const power = calculatePower(data);
   const img = document.createElement("img");
   img.src = data.image;
-  const h3 = document.createElement("h3");
-  h3.innerText = `${data.name}`;
-  const rank = document.createElement("h2");
-  rank.innerText = `POWER LEVEL: ${calculateRank(power)}`;
-  rank.style.color = rankColor(power);
-  const gender = document.createElement("p");
-  gender.innerText = `GENDER: ${data.gender}`;
-  const species = document.createElement("p");
-  species.innerText = `SPECIES: ${data.species}`;
-  const status = document.createElement("p");
-  status.innerText = `STATUS: ${data.status}`;
-  const homeAddress = document.createElement("p");
-  homeAddress.innerText = `HOME: ${data.location.name}`;
-  profileEl.append(img, h3, rank, gender, species, status, homeAddress);
+  img.disabled = true;
+  const h1 = document.createElement("h1");
+  h1.innerText = `${data.name}`;
+  const rank = document.createElement("h1");
+  rank.innerText = `LEVEL: ${calculateRank(power)}`;
+  rank.classList.add(rankColor(power));
+  // rank.style.backgroundColor = "rgba(255, 197, 197, 0.847);";
+  // rank.style.borderRadius = "1vw";
+
+  profileEl.append(img, rank, h1);
   profileEl.classList.remove(CLASSNAME_HIDDEN);
 }
 
