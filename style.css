@@ -147,9 +147,9 @@ img {
   max-width: 170px;
 }
 
-img:hover {
+/* img:hover {
   border: 6px solid yellow;
-}
+} */
 
 .blur {
   -webkit-filter: grayscale(100%);
