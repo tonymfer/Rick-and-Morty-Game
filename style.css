@@ -152,7 +152,8 @@ img:hover {
 }
 
 .blur {
-  filter: blur(2px);
+  -webkit-filter: grayscale(100%);
+  filter: gray;
 }
 
 .background-video {

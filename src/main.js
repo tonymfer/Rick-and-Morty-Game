@@ -350,7 +350,7 @@ function rankColor(item) {
   if (item <= 5) {
     return "rankRickillable";
   } else if (item <= 10) {
-    return "ranA";
+    return "rankA";
   } else if (item <= 20) {
     return "rankB";
   } else if (item <= 30) {
