@@ -188,10 +188,9 @@ async function createMonster() {
         console.log(monsterPower);
         picture.src = data.image;
         soldierName.innerText = `${data.name}(${data.status})`;
-        setTimeout(
-          () => (power.innerText = `POWER LEVEL: ${monsterRank}`),
-          1500
-        );
+        power.innerText = `POWER LEVEL: ${monsterRank}`;
+        power.classList.add(CLASSNAME_HIDDEN);
+        setTimeout(() => power.classList.remove(CLASSNAME_HIDDEN), 2000);
         power.style.color = rankColor(monsterPower);
       }
     });
