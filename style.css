@@ -39,12 +39,17 @@ input {
 }
 
 img {
+  transition: 1s;
   transition: filter 1s linear;
   border: 2px solid greenyellow;
   border-radius: 4px;
   padding: 5px;
   margin: 10px;
   width: 12vw;
+}
+
+img:hover {
+  width: 15vw;
 }
 
 .blur {

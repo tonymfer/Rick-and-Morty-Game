@@ -67,6 +67,6 @@ function timeBomb() {
     }, 6000);
     setTimeout(() => {
       newGameEl.classList.remove(CLASSNAME_HIDDEN);
-    }, 8000);
+    }, 9000);
   }, 1000 * 60 * 3);
 }
