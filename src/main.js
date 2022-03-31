@@ -9,7 +9,7 @@ const grantedEl = document.querySelector("#access-granted");
 const scannedEl = document.querySelector("#scanned");
 const scanContainer = document.querySelector("#cards-container");
 const cardEl = scannedEl.querySelector("div");
-const urDude = document.querySelector("ur-dude");
+const urDude = document.querySelector("#ur-dude");
 // const card2 = scannedEl.querySelector("#card2");
 // const card3 = scannedEl.querySelector("#card3");
 // const card4 = scannedEl.querySelector("#card4");
@@ -31,7 +31,7 @@ const bgMusic = new Howl({
   src: ["/img/timeisout.mp3"],
   autoplay: true,
   loop: true,
-  volume: 1,
+  volume: 0.3,
 });
 const gameoverMusic = new Audio("/img/lostalllife.mp3");
 bgMusic.play();

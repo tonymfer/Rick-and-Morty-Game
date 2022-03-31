@@ -13,6 +13,7 @@ const rickPicture = document.querySelector("#kill-this-rick img");
 const rickName = document.querySelector("#boss-name");
 const rickPower = document.querySelector("#boss-power");
 const killRick = document.querySelector("#challenge");
+// const urDude = document.querySelector("#ur-dude");
 
 const DEAD_BOSS_KEY = "dead boss";
 const ALIVE_BOSS_KEY = "alive boss";
